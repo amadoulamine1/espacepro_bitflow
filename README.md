@@ -310,3 +310,5 @@ Let’s start by adding a simple modal authentication component from the Flowbit
 
 Installer pagerFanta
 composer require babdev/pagerfanta-bundle
+composer require pagerfanta/twig
+composer req pagerfanta/doctrine-orm-adapter pagerfanta/doctrine-collections-adapter pagerfanta/twig
