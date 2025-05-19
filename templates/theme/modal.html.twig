@@ -1,11 +1,13 @@
 <div
-	class="bg-transparent bg-black/60">
+class="bg-transparent bg-black/60">
+
 	<!-- Modal structure - now a target of the controller on div.container -->
 
 {# The 'modal' class is just a marker, Stimulus controls display. Tailwind classes handle appearance. #}
 {# Added Tailwind classes for backdrop (fixed, inset-0, z-50, flex, items-center, justify-center, bg-black, bg-opacity-40) and initial hidden state (style="display: none;") #}
 <div
-	id="sfd-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 !bg-black/60 backdrop-blur-sm" data-modal-target="modalElement" style="display: none;">
+id="sfd-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 !bg-black/60 backdrop-blur-sm"   data-modal-target="modalElement" style="display: none;">
+<div id="modalElement" class="modal-content">
 	{# The modal-content div now uses Tailwind classes for styling #}
 
 	{# Added Tailwind classes for content styling (bg-white, dark:bg-gray-800, rounded-lg, shadow-xl, p-6, w-full, max-w-lg, md:max-w-xl, lg:max-w-2xl, relative, mx-auto) #}
@@ -28,6 +30,8 @@
 		</turbo-frame>
 	</div>
 </div>
+</div>
+
 {# Removed extra closing div #}
 </div>
 

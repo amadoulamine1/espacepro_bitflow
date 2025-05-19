@@ -85,11 +85,23 @@ final class SfdController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($sfd);
             $entityManager->flush();
+            // Si la requête vient du turbo-frame du modal
+            if ($request->headers->get('Turbo-Frame') === 'sfd-details') {
+                return $this->redirectToRoute('app_sfd_show', ['id' => $sfd->getId()], Response::HTTP_SEE_OTHER);
+            }
 
             return $this->redirectToRoute('app_sfd_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('sfd/new.html.twig', [
+        // Si la requête est pour un turbo-frame, on rend le template partiel
+        if ($request->headers->get('Turbo-Frame') === 'sfd-details') {
+            return $this->render('sfd/_new.html.twig', [
+                'sfd' => $sfd,
+                'form' => $form->createView(),
+            ]);
+        }
+
+        return $this->render('sfd/_new.html.twig', [
             'sfd' => $sfd,
             'form' => $form,
         ]);

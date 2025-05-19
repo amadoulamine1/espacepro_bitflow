@@ -44,6 +44,75 @@
 #logo-sidebar div ul li a:hover span {
   @apply bg-dgsfc-100 text-dgsfc-900 dark:bg-dgsfc-700 dark:text-dgsfc-100;
 }
+
+/*.pagination__item {
+ @apply flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-dgsfc-900 border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white
+}
+
+#pagination{
+    @apply  inline-flex items-center mb-4
+}
+.pagination{
+    @apply flex items-center -space-x-px h-10 text-base
+}*/
 /*.menu-item {
     @apply text-dgsfc-100 dark:text-dgsfc-900 hover:bg-gray-400 dark:hover:bg-gray-700;
 }*/
+#pagination{
+    @apply  inline-flex items-center mb-4
+}
+.pagination{
+    @apply flex items-center -space-x-px h-10 text-base; /* This is the <ul> or <nav> container */
+}
+
+/* Style for individual pagination links (<a> tags within the container) */
+.pagination a {
+    @apply flex items-center justify-center px-4 h-10 leading-tight border; /* Base styles */
+    /* Default state colors (Light Mode) */
+    @apply text-dgsfc-100 bg-dgsfc-900 border-dgsfc-700; /* Using custom dgsfc colors */
+    /* Dark mode colors */
+    @apply dark:bg-dgsfc-100 dark:border-dgsfc-300 dark:text-dgsfc-900; /* Using custom dgsfc colors */
+    /* Hover state (Light Mode) */
+    @apply hover:bg-dgsfc-700 hover:text-dgsfc-100; /* Using custom dgsfc colors */
+    /* Dark mode hover state */
+    @apply dark:hover:bg-dgsfc-300 dark:hover:text-dgsfc-900; /* Using custom dgsfc colors */
+}
+
+/* Style for the first link (rounded left corner) */
+.pagination li:first-child a { @apply ms-0 rounded-s-lg; }
+
+/* Style for the last link (rounded right corner) */
+.pagination li:last-child a { @apply rounded-r-lg border-e; } /* Ensure border-e is present on the last one */
+
+/* Style for the active link */
+.pagination .active a, .pagination span {
+    /* Active state colors (Light Mode) */
+    @apply text-dgsfc-900 bg-dgsfc-300 border-dgsfc-400; /* Using custom dgsfc colors */
+    /* Dark mode active state */
+    @apply dark:bg-dgsfc-700 dark:border-dgsfc-600 dark:text-dgsfc-100; /* Using custom dgsfc colors */
+    /* Keep same background on hover for active link */
+    @apply hover:bg-dgsfc-300 dark:hover:bg-dgsfc-700;
+}
+
+/* Style for the active link */
+ .pagination span {
+    height: 50px;
+    width: 59px;
+    /* Active state colors (Light Mode) */
+    text-align: center; /* Important pour centrer le texte verticalement dans l'élément */
+    line-height: 50px; /* Important pour centrer le texte verticalement dans l'élément */
+    /* Active state colors (Light Mode) */
+    @apply text-dgsfc-900 bg-dgsfc-100 border-dgsfc-900; /* Using custom dgsfc colors */
+    /* Dark mode active state */
+    @apply dark:bg-dgsfc-700 dark:border-dgsfc-600 dark:text-dgsfc-100; /* Using custom dgsfc colors */
+    /* Keep same background on hover for active link */
+    @apply hover:bg-amber-300 hover:text-white dark:hover:bg-amber-700 dark:hover:text-white;
+}
+.pagination__item--current-page{
+     /* Active state colors (Light Mode) */
+     @apply text-dgsfc-900 bg-dgsfc-100 border-dgsfc-400; /* Using custom dgsfc colors */
+     /* Dark mode active state */
+     @apply dark:bg-dgsfc-100 dark:border-dgsfc-600 dark:text-dgsfc-900; /* Using custom dgsfc colors */
+     /* Keep same background on hover for active link */
+     @apply hover:bg-dgsfc-300 dark:hover:bg-dgsfc-700;
+}
