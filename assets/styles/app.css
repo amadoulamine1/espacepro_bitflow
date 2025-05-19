@@ -1,3 +1,21 @@
-body {
-    background-color: skyblue;
+
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+
+@source "../../node_modules/flowbite";
+
+@custom-variant yellow (&:where(.yellow, .yellow *));
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-dgsfc-100 :#f3f2f2;
+    --color-dgsfc-200 :#b99280;
+    --color-dgsfc-300 :#b99270;
+    --color-dgsfc-400 :#b99270;
+    --color-dgsfc-500 :#b99270;
+    --color-dgsfc-600 :#b99270;
+    --color-dgsfc-700 :#b99270;
+    --color-dgsfc-800 :#b99270;
+    --color-dgsfc-900 :#b99270;
 }
