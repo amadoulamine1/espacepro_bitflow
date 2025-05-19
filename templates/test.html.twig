@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Sfd index
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.sfd-card {
+			transition: all 0.3s ease;
+		}
+		.sfd-card.expanded {
+			grid-column: span 4;
+		}
+		.sfd-details {
+			display: none;
+		}
+		.sfd-card.expanded .sfd-details {
+			display: block;
+		}
+	</style>
+{% endblock %}
+{% block body %}
+
+
+{% endblock %}
+

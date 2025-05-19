@@ -1,18 +1,39 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<html lang="fr" class="min-h-screen bg-white text-gray-900 transition-colors duration-300">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		{% block title %}
+			Welcome!
+		{% endblock %}
+	</title>
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+	{% block stylesheets %}
+		{{ encore_entry_link_tags('app') }}
+	{% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+	{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+	{% endblock %}
+</head>
+
+	<body
+		class="flex h-screen overflow-hidden">
+		<!-- Navbar -->
+		{% include 'theme/navbar.html.twig' %}
+		<!-- Sidebar -->
+		{% include 'theme/sidebar.html.twig' %}
+
+		<!-- Content -->
+		{#% include 'theme/content.html.twig' %#}
+
+			<main
+			class="sm:ml-64 flex-1 overflow-y-auto"> {# Ce turbo-frame contiendra le contenu principal et sera la cible des liens de la sidebar #}
+			<turbo-frame id="content_frame" data-turbo-action="advance" class="aria-busy:opacity-50 aria-busy:blur-sm transition-all">
+				<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14"> {% block body %}{% endblock %}
+					</div>
+				</turbo-frame>
+			</main>
+		</body>
+	</html>
+

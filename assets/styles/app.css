@@ -19,3 +19,31 @@
     --color-dgsfc-800 :#b99270;
     --color-dgsfc-900 :#b99270;
 }
+:root {
+    --color-dgsfc-100 :#f3f2f2;
+    --color-dgsfc-200 :#b99280;
+    --color-dgsfc-300 :#b99270;
+    --color-dgsfc-400 :#b99270;
+    --color-dgsfc-500 :#b99270;
+    --color-dgsfc-600 :#b99270;
+    --color-dgsfc-700 :#b99270;
+    --color-dgsfc-800 :#b99270;
+    --color-dgsfc-900 :#b99270;
+}
+#logo-sidebar, #navbar, #logo-sidebar div{
+  @apply bg-dgsfc-900 dark:bg-dgsfc-100 text-dgsfc-100 dark:text-dgsfc-900;
+}
+
+#logo-sidebar div ul li a svg,
+#logo-sidebar div ul li a span {
+  @apply text-dgsfc-100 dark:text-dgsfc-900 ;
+}
+
+#logo-sidebar div ul li a:hover,
+#logo-sidebar div ul li a:hover svg,
+#logo-sidebar div ul li a:hover span {
+  @apply bg-dgsfc-100 text-dgsfc-900 dark:bg-dgsfc-700 dark:text-dgsfc-100;
+}
+/*.menu-item {
+    @apply text-dgsfc-100 dark:text-dgsfc-900 hover:bg-gray-400 dark:hover:bg-gray-700;
+}*/

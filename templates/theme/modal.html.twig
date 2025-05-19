@@ -1,0 +1,34 @@
+<div
+	class="bg-transparent bg-black/60">
+	<!-- Modal structure - now a target of the controller on div.container -->
+
+{# The 'modal' class is just a marker, Stimulus controls display. Tailwind classes handle appearance. #}
+{# Added Tailwind classes for backdrop (fixed, inset-0, z-50, flex, items-center, justify-center, bg-black, bg-opacity-40) and initial hidden state (style="display: none;") #}
+<div
+	id="sfd-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 !bg-black/60 backdrop-blur-sm" data-modal-target="modalElement" style="display: none;">
+	{# The modal-content div now uses Tailwind classes for styling #}
+
+	{# Added Tailwind classes for content styling (bg-white, dark:bg-gray-800, rounded-lg, shadow-xl, p-6, w-full, max-w-lg, md:max-w-xl, lg:max-w-2xl, relative, mx-auto) #}
+		<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-lg md:max-w-xl lg:max-w-2xl relative mx-auto"> {# Close button using absolute positioning and Tailwind classes #}
+		{# Added Tailwind classes for close button (absolute, top-3, right-3, text-gray-500, dark:text-gray-400, hover:text-gray-700, dark:hover:text-gray-200, text-2xl, font-bold, cursor-pointer) #}
+			<span class="absolute top-3 right-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-2xl font-bold cursor-pointer" data-action="click->modal#close"> &times;
+		</span>
+		<turbo-frame
+			id="sfd-details" src="" loading="lazy">
+			<!-- Le contenu sera chargé dynamiquement ici -->
+			<div class="text-center py-8">
+				<div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-300 mx-auto"></div>
+				{# Added dark:border-gray-300 #}
+				<p
+					class="mt-4 text-gray-600 dark:text-gray-300">
+					{# Added dark:text-gray-300 #}
+					Chargement en cours...
+				</p>
+			</div>
+		</turbo-frame>
+	</div>
+</div>
+{# Removed extra closing div #}
+</div>
+
+

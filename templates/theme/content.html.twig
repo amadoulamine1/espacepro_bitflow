@@ -1,0 +1,27 @@
+<div class="p-4 sm:ml-64">
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+		
+		<div class="flex items-center justify-center h-48 mb-4 rounded-sm bg-gray-50 dark:bg-gray-800">
+			<p class="text-2xl text-gray-400 dark:text-gray-500">
+			qui c'est
+			</p>
+		</div>
+
+		<div data-controller="popover">
+			This is my GitHub card available on
+			<a href="/" data-action="mouseenter->popover#show mouseleave->popover#hide"> GitHub </a>
+
+			<template data-popover-target="content">
+				<div data-popover-target="card">
+				<p>This content is in a hidden template.</p>
+				</div>
+			</template>
+		</div>
+
+			<div data-popover-target="card">
+  <p>This content is loaded with AJAX.</p>
+</div>
+	{% block body %}
+		{% endblock %}
+	</div>
+</div>

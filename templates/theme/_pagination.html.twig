@@ -1,0 +1,29 @@
+{% if pagerfanta.haveToPaginate() %}
+	<nav aria-label="Pagination" class="flex justify-center mt-4">
+		<ul class="inline-flex -space-x-px text-sm">
+			{% if pagerfanta.hasPreviousPage() %}
+				<li>
+					<a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({ page: pagerfanta.previousPage })) }}" class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+						Précédent
+					</a>
+				</li>
+			{% endif %}
+
+			{% for page in 1..pagerfanta.nbPages %}
+				<li>
+					<a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({ page: page })) }}" class="px-3 py-2 leading-tight border border-gray-300 {{ page == pagerfanta.currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700' }}">
+						{{ page }}
+					</a>
+				</li>
+			{% endfor %}
+
+			{% if pagerfanta.hasNextPage() %}
+				<li>
+					<a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({ page: pagerfanta.nextPage })) }}" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+						Suivant
+					</a>
+				</li>
+			{% endif %}
+		</ul>
+	</nav>
+{% endif %}

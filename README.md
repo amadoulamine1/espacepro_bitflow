@@ -308,3 +308,5 @@ Let’s start by adding a simple modal authentication component from the Flowbit
     </div>
 </div> 
 
+Installer pagerFanta
+composer require babdev/pagerfanta-bundle
