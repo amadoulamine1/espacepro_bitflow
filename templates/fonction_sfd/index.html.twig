@@ -216,39 +216,41 @@
 				</thead>
 				<tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
 					{% for fonctionSfd in pager %}
-						{# Pagerfanta est itérable, il itère sur les résultats de la page actuelle #}
-                        <tr 
-                            class="hover:bg-gray-50 cursor-pointer" 
-                            data-action="click->modal#open" 
-                            data-modal-frame-id-param="fonction-sfd-details"
-                            data-modal-url-param="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}">
+						<turbo-frame id="fonction-sfd-{{ fonctionSfd.id }}">
+							{# Pagerfanta est itérable, il itère sur les résultats de la page actuelle #}
+							<tr 
+								class="hover:bg-gray-50 cursor-pointer" 
+								data-action="click->modal#open" 
+								data-modal-frame-id-param="fonction-sfd-details"
+								data-modal-url-param="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}">
 
-							<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-								{{ fonctionSfd.id }}
-							</td>
-							<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-								{{ fonctionSfd.libelle | default('N/A') }}
-							</td>
-							<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-								{{ fonctionSfd.sigle | default('N/A') }}
-							</td>
-							<td class="px-6 py-6 whitespace-nowrap text-right text-sm font-medium">
-								<button data-action="click->modal#open" 
-                                    data-modal-frame-id-param="fonction-sfd-details"
-                                    data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="btn">
-									Ouvrir le modal
-								</button>
-								<button 
-                                    data-action="click->modal#open" 
-                                    data-modal-frame-id-param="fonction-sfd-details"
-                                    data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
-									Voir/Modifier
-								</button>
-								<a href="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
-									Voir
-								</a>
-							</td>
-						</tr>
+								<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+									{{ fonctionSfd.id }}
+								</td>
+								<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+									{{ fonctionSfd.libelle | default('N/A') }}
+								</td>
+								<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+									{{ fonctionSfd.sigle | default('N/A') }}
+								</td>
+								<td class="px-6 py-6 whitespace-nowrap text-right text-sm font-medium">
+									<button data-action="click->modal#open" 
+										data-modal-frame-id-param="fonction-sfd-details"
+										data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="btn">
+										Ouvrir le modal
+									</button>
+									<button 
+										data-action="click->modal#open" 
+										data-modal-frame-id-param="fonction-sfd-details"
+										data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+										Voir/Modifier
+									</button>
+									<a href="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+										Voir
+									</a>
+								</td>
+							</tr>
+						</turbo-frame>
 					{% else %}
 						<tr>
 							<td colspan="8" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 text-center">

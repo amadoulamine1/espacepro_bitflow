@@ -1,0 +1,20 @@
+<turbo-frame id="fonction-sfd-{{ fonctionSfd.id }}">
+	<tr 
+        class="hover:bg-gray-50 cursor-pointer" 
+        data-action="click->modal#open" 
+        data-modal-frame-id-param="fonction-sfd-details" 
+        data-modal-url-param="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}">
+		<td class="px-6 py-6 ...">
+			{{ fonctionSfd.id }}
+		</td>
+		<td class="px-6 py-6 ...">
+			{{ fonctionSfd.libelle }}
+		</td>
+		<td class="px-6 py-6 ...">
+			{{ fonctionSfd.sigle }}
+		</td>
+		<td
+			class="px-6 py-6 ...">{# ...boutons... #}
+		</td>
+	</tr>
+</turbo-frame>

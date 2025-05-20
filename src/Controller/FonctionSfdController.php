@@ -80,15 +80,18 @@ final class FonctionSfdController extends AbstractController
 
          // Si la requête est pour un turbo-frame, on rend le template partiel
          if ($request->headers->get('Turbo-Frame') === 'fonction-sfd-details') {
-            return $this->render('sfd/_new.html.twig', [
+            return $this->render('fonctionsfd/_new.html.twig', [
                 'sfd' => $fonctionSfd,
                 'form' => $form->createView(),
             ]);
         }
 
-        return $this->render('fonction_sfd/_new.html.twig', [
+       /* return $this->render('fonction_sfd/_new.html.twig', [
             'fonction_sfd' => $fonctionSfd,
             'form' => $form,
+        ]);*/
+        return $this->render('fonction_sfd/_table_row.stream.html.twig', [
+            'fonctionSfd' => $fonctionSfd,
         ]);
     }
 
@@ -110,7 +113,9 @@ final class FonctionSfdController extends AbstractController
             $entityManager->flush();
             
             if ($request->headers->get('Turbo-Frame') === 'fonction-sfd-details') {
-                return $this->redirectToRoute('app_fonction_sfd_show', ['id' => $fonctionSfd->getId()], Response::HTTP_SEE_OTHER);
+                return $this->render('fonction_sfd/_table_row.stream.html.twig', [
+                    'fonctionSfd' => $fonctionSfd,
+                ]);
             }
 
             return $this->redirectToRoute('app_fonction_sfd_index', [], Response::HTTP_SEE_OTHER);
