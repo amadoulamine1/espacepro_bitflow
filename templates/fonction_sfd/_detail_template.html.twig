@@ -1,0 +1,127 @@
+{# templates/sfd/_detail_template.html.twig #}
+
+<turbo-frame id="fonction-sfd-details">
+	{% if form is defined %}
+		{#% set is_edit = sfd is defined and sfd.id is defined %#}
+		{% set is_edit = sfd is defined and sfd.id is defined and sfd.id %}
+
+		{{ form_start(form, {
+            'action': is_edit
+                ? path('app_sfd_edit', {id: sfd.id})
+                : path('app_sfd_new'),
+            'method': 'POST',
+            'attr': {'data-turbo-frame': 'fonction-sfd-details'}
+        }) }}
+	{% endif %}
+	<div class="space-y-6">
+		<div class="flex justify-between items-center">
+			<h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-3xl">
+				<span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+					{% if form is defined %}
+						{{ is_edit
+                            ? "Édition de l'institution: " ~ (sfd.sigle|default(sfd.id))
+                            : "Nouvelle institution"
+                        }}
+					{% else %}
+						Détails de l'institution:
+						{{ fonctionSfd.sigle|default(fonctionSfd.id) }}
+					{% endif %}
+				</span>
+			</h1>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			{% macro displayField(value, label, editMode = false, formField = null, fieldType = 'text') %}
+				{% if editMode and formField %}
+					<div class="relative z-0 group">
+						{% if fieldType == 'checkbox' %}
+							<div class="flex items-center">
+								{{ form_widget(formField, {
+                                    'attr': {
+                                        'class': 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                                    }
+                                }) }}
+								{{ form_label(formField, label, {
+                                    'label_attr': {
+                                        'class': 'ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'
+                                    }
+                                }) }}
+							</div>
+						{% else %}
+							{{ form_widget(formField, {
+                                'attr': {
+                                    'class': 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer',
+                                    'placeholder': ' '
+                                }
+                            }) }}
+							{{ form_label(formField, label, {
+                                'label_attr': {
+                                    'class': 'absolute text-sm text-gray-500 dark:text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto'
+                                }
+                            }) }}
+							{{ form_errors(formField) }}
+						{% endif %}
+					</div>
+				{% else %}
+					<div>
+						<p class="text-sm font-medium text-gray-500 dark:text-gray-500 mb-2">
+							{{ label }}
+						</p>
+						{% if fieldType == 'checkbox' %}
+							<div class="flex items-center">
+								<input type="checkbox" {% if value %} checked {% endif %} disabled class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+								<label class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">
+									{{ value ? 'Oui' : 'Non' }}
+								</label>
+							</div>
+						{% else %}
+							<p class="text-gray-900 dark:text-white">
+								{{ value|default('Non renseigné') }}
+							</p>
+						{% endif %}
+					</div>
+				{% endif %}
+			{% endmacro %}
+
+			{{ _self.displayField(sfd.numAgrement|default(''), 'Numéro d\'agrément', form is defined, form is defined ? form.numAgrement : null) }}
+            {{ _self.displayField(sfd.sigle|default(''), 'Sigle', form is defined, form is defined ? form.sigle : null) }}
+            {{ _self.displayField(sfd.nomDeveloppe|default(''), 'Nom développé', form is defined, form is defined ? form.nomDeveloppe : null) }}
+            {{ _self.displayField(sfd.email|default(''), 'E-mail', form is defined, form is defined ? form.email : null) }}
+            {{ _self.displayField(sfd.telephone|default(''), 'Téléphone', form is defined, form is defined ? form.telephone : null) }}
+            {{ _self.displayField(sfd.is_actif|default(false), 'Actif', form is defined, form is defined ? form.is_actif : null, 'checkbox') }}
+            {{ _self.displayField(sfd.type|default(''), 'Type', form is defined, form is defined ? form.type : null) }}
+            {{ _self.displayField(sfd.decisionAgrement|default(''), 'Décision d\'agrément', form is defined, form is defined ? form.decisionAgrement : null) }}
+			{{ _self.displayField(sfd.region|default(''), 'Région', form is defined, form is defined ? form.region : null) }}
+			{{ _self.displayField(sfd.reseau|default(''), 'Réseau', form is defined, form is defined ? form.reseau : null) }}
+			{{ _self.displayField(sfd.is_article44|default(false), 'Article 44', form is defined, form is defined ? form.is_article44 : null, 'checkbox') }}
+		</div>
+
+		{% if form is defined %}
+			{% if is_edit %}
+				<a href="{{ path('app_sfd_show', {id: sfd.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-turbo-frame="fonction-sfd-details">
+					Annuler (Voir)
+				</a>
+			{% endif %}
+		{% else %}
+			{% if sfd is defined and sfd.id is defined %}
+				<a href="{{ path('app_sfd_edit', {id: sfd.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600" data-turbo-frame="fonction-sfd-details">
+					Modifier
+				</a>
+			{% endif %}
+		{% endif %}
+
+		{% if form is defined %}
+			<div style="display:none;">
+				{{ form_rest(form) }}
+			</div>
+			<div class="mt-6 flex justify-end">
+				<button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+					{{ is_edit ? 'Enregistrer les modifications' : 'Créer' }}
+				</button>
+			</div>
+		{% endif %}
+	</div>
+	{% if form is defined %}
+		{{ form_end(form) }}
+	{% endif %}
+</turbo-frame>

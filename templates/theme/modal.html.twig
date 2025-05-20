@@ -16,7 +16,7 @@ id="sfd-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-opa
 			<span class="absolute top-3 right-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-2xl font-bold cursor-pointer" data-action="click->modal#close"> &times;
 		</span>
 		<turbo-frame
-			id="sfd-details" src="" loading="lazy">
+			id="{{ modal_frame_id}}" src="" loading="lazy">
 			<!-- Le contenu sera chargé dynamiquement ici -->
 			<div class="text-center py-8">
 				<div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-300 mx-auto"></div>

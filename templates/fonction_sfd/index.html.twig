@@ -1,0 +1,242 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Sfd index
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.sfd-card {
+			transition: all 0.3s ease;
+		}
+		.sfd-card.expanded {
+			grid-column: span 4;
+		}
+		.sfd-details {
+			display: none;
+		}
+		.sfd-card.expanded .sfd-details {
+			display: block;
+		}
+	</style>
+{% endblock %}
+{% block body %}
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8" data-controller="modal">
+
+		<div class="mb-6">
+			<h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+				Liste des SFDs (
+				{{ pager.nbResults }}
+				au total)
+			</h1>
+		</div>
+		<!-- Modal portal (optionnel) -->
+		<div id="modal-portal"></div>
+		{# Formulaire pour les filtres et le nombre d'éléments par page #}
+		{# Attach filter_controller to the form for autosubmit/debounce #}
+		<form
+			method="get" action="{{ path(app.request.attributes.get('_route')) }}" data-turbo-frame="content_frame" data-controller="filter" data-action="input->filter#filter change->filter#filter" class="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
+			{# Delay set to 10000ms (10s) as requested #}
+			<div
+				class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 items-end">
+				{# Use items-end to align buttons/selects #}
+				<div>
+					<label for="filter_sigle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+						Filtrer par Sigle:
+					</label>
+					<input type="text" name="filter_sigle" id="filter_sigle" value="{{ app.request.query.get('filter_sigle') }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-filter-target="input">
+				</div>
+				<div>
+					<label for="filter_libelle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+						Filtrer par Libellé:
+					</label>
+					<input data-filter-target="input" type="text" name="filter_libelle" id="filter_libelle" value="{{ app.request.query.get('filter_libelle') }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+
+				</div>
+				<div>
+					<label for="limit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+						Afficher par page:
+					</label>
+					<select name="limit" id="limit" data-filter-target="input" data-action="change->filter#handleLimitChange" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+						{% set current_limit = app.request.query.get('limit', 10) %}
+						<option value="10" {% if current_limit == 10 %} selected {% endif %}>
+							10
+						</option>
+						<option value="20" {% if current_limit == 20 %} selected {% endif %}>
+							20
+						</option>
+						<option value="50" {% if current_limit == 50 %} selected {% endif %}>
+							50
+						</option>
+						<option value="100" {% if current_limit == 100 %} selected {% endif %}>
+							100
+						</option>
+					</select>
+				</div>
+				<div
+					class="flex space-x-2">
+					{# Use type="button" to prevent default form submission on click, rely on Stimulus #}
+					<button
+						type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+						{# Changed to type="submit" to work with requestSubmit() #}
+						Appliquer
+					</button>
+					{# Reset button - can use a link or a button with data-action #}
+					<a href="{{ path(app.request.attributes.get('_route'), {'limit': current_limit}) }}" data-turbo-frame="content_frame" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+						Réinitialiser
+					</a>
+				</div>
+			</div>
+			{# Champs cachés pour conserver le tri actuel lors du filtrage ou changement de limite #}
+			<input type="hidden" name="sort" value="{{ app.request.query.get('sort', 's.id') }}">
+			<input type="hidden" name="direction" value="{{ app.request.query.get('direction', 'asc') }}">
+		</form>
+
+		<div
+			class="flex justify-end items-center mb-4">
+			{# Align New fonction_sfd button to the right #}
+			<a href="{{ path('app_fonction_sfd_new') }}" data-action="click->modal#open" data-modal-url-param="{{ path('app_fonction_sfd_new') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+				Nouvelle Fonction SFD
+			</a>
+		</div>
+		<div class="flex justify-center grid items-center gap-4">
+			{% if pager.haveToPaginate() %}
+				<div id="pagination" class="mb-4">
+					{{ pagerfanta(pager) }}
+					{# Utilise la vue par défaut configurée (ex: Tailwind) #}
+				</div>
+			{% endif %}
+		</div>
+
+		{#% include 'theme/_pagination.html.twig' with { pagerfanta: pager } %#}
+
+		<div class="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg dark:border-gray-700">
+			<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+				<thead
+					class="bg-gray-50 dark:bg-gray-700">
+					{# Filter row #}
+					<tr
+						class="hover:bg-gray-50">
+						{# Empty cells for non-filterable columns #}
+						<th
+						scope="col" class="px-6 py-3"/>
+						{# ID #}
+						<th scope="col" class="px-6 py-3"/>
+						{# Agrément #}
+						{# Sigle Filter #}
+							<th scope="col" class="px-6 py-3"> <div data-controller="autocomplete" data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" data-autocomplete-field-value="sigle" class="relative">
+								<input type="text" name="filter_sigle" id="filter_sigle_header" {# Unique ID #} value="{{ app.request.query.get('filter_sigle') }}" data-autocomplete-target="input" data-action="input->autocomplete#onInput filter#filter" {# Trigger autocomplete and filter debounce #} class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Filtrer Sigle">
+								<div
+									data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">{# Suggestions will be rendered here #}
+								</div>
+							</div>
+						</th>
+						{# Nom Développé Filter #}
+						<th scope="col" class="px-6 py-3">
+							<div data-controller="autocomplete" data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" data-autocomplete-field-value="nomDeveloppe" class="relative">
+								<input type="text" name="filter_nom_developpe" id="filter_nom_developpe_header" {# Unique ID #} value="{{ app.request.query.get('filter_nom_developpe') }}" data-autocomplete-target="input" data-action="input->autocomplete#onInput filter#filter" class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Filtrer Nom">
+								<div
+									data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">{# Suggestions will be rendered here #}
+								</div>
+							</div>
+						</th>
+					
+						<th
+						scope="col" class="px-6 py-3"/>
+					{# Action #}
+					</tr>
+					{# Sortable headers row #}
+					<tr>
+						{% macro sortable_th(label, field) %}
+							{% set current_sort = app.request.query.get('sort') %}
+							{% set current_direction = app.request.query.get('direction') %}
+							{% set new_direction = (current_sort == field and current_direction == 'asc') ? 'desc' : 'asc' %}
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+								<a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': field, 'direction': new_direction, 'page': 1})) }}" data-turbo-frame="content_frame" class="hover:text-indigo-500 dark:hover:text-indigo-400">
+									{{ label }}
+									{% if current_sort == field %}
+										{% if current_direction == 'asc' %}
+											<span class="ml-1">
+												▲
+											</span>
+										{% else %}
+											<span class="ml-1">
+												▼
+											</span>
+										{% endif %}
+									{% endif %}
+								</a>
+							</th>
+						{% endmacro %}
+
+						{{ _self.sortable_th('Id', 's.id') }}
+						{{ _self.sortable_th('Libellé', 's.libelle') }}
+						{{ _self.sortable_th('Sigle', 's.sigle') }}
+						{#{ _self.sortable_th('Email', 's.email') }#}
+						{# Make Email sortable #}
+						{#{ _self.sortable_th('Téléphone', 's.telephone') }#}
+						{# Make Telephone sortable #}
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"> Action
+						</th>
+
+					</tr>
+				</thead>
+				<tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+					{% for fonctionSfd in pager %}
+						{# Pagerfanta est itérable, il itère sur les résultats de la page actuelle #}
+                        <tr 
+                            class="hover:bg-gray-50 cursor-pointer" 
+                            data-action="click->modal#open" 
+                            data-modal-frame-id-param="fonction-sfd-details"
+                            data-modal-url-param="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}">
+
+							<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+								{{ fonctionSfd.id }}
+							</td>
+							<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+								{{ fonctionSfd.libelle | default('N/A') }}
+							</td>
+							{# Adaptez avec vos vrais champs, ex: sfd.nom #}
+							<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+								{{ fonctionSfd.sigle | default('N/A') }}
+							</td>
+							<td class="px-6 py-6 whitespace-nowrap text-right text-sm font-medium">
+								<button data-action="click->modal#open" 
+                                    data-modal-frame-id-param="fonction-sfd-details"
+                                    data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="btn">
+									Ouvrir le modal
+								</button>
+								<button 
+                                    data-action="click->modal#open" 
+                                    data-modal-frame-id-param="fonction-sfd-details"
+                                    data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+									Voir/Modifier
+								</button>
+								<a href="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+									Voir
+								</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="8" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 text-center">
+								Aucun fonction_sfd trouvé.
+							</td>
+							{# Ajustez le colspan au nombre réel de vos colonnes #}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		{% include 'theme/modal.html.twig' with {'modal_frame_id': 'fonction-sfd-details'}%}
+
+		{% if pager.haveToPaginate() %}
+			<div class="mt-4">
+				{{ pagerfanta(pager) }}
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
+

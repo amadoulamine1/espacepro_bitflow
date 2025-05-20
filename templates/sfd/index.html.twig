@@ -88,6 +88,7 @@
         <div class="flex justify-end items-center mb-4"> {# Align New SFD button to the right #}
              <a href="{{ path('app_sfd_new') }}"
 			  data-action="click->modal#open"
+			  data-modal-frame-id-param="sfd-details"
     		  data-modal-url-param="{{ path('app_sfd_new') }}"
 			  class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
 			  Nouveau SFD
@@ -95,7 +96,7 @@
         </div>
 		<div class="flex justify-center grid items-center gap-4">
         {% if pager.haveToPaginate() %}
-            <div id="pagination" class="mb-4">
+            <div id="pagination" class="mb-4">data-modal-frame-id-param="sfd-details"
                 {{ pagerfanta(pager) }} {# Utilise la vue par défaut configurée (ex: Tailwind) #}
             </div>
         {% endif %}
@@ -125,6 +126,7 @@
                                        id="filter_sigle_header" {# Unique ID #}
                                        value="{{ app.request.query.get('filter_sigle') }}"
                                        data-autocomplete-target="input"
+									   data-modal-frame-id-param="sfd-details"
                                        data-action="input->autocomplete#onInput filter#filter" {# Trigger autocomplete and filter debounce #}
                                        class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                        placeholder="Filtrer Sigle">
@@ -145,6 +147,7 @@
                                        value="{{ app.request.query.get('filter_nom_developpe') }}"
                                        data-autocomplete-target="input"
                                        data-action="input->autocomplete#onInput filter#filter"
+									   data-modal-frame-id-param="sfd-details"
                                        class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                        placeholder="Filtrer Nom">
                                 <div data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">
@@ -193,6 +196,7 @@
                         <tr 
                             class="hover:bg-gray-50 cursor-pointer"
                             data-action="click->modal#open"
+							data-modal-frame-id-param="sfd-details"
                             data-modal-url-param="{{ path('app_sfd_show', {'id': sfd.id}) }}"
                         >
                             <td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ sfd.id }} </td>
@@ -206,11 +210,13 @@
                             <button 
                                 data-action="click->modal#open"
                                 data-modal-url-param="{{ path('app_sfd_show', {id: sfd.id}) }}"
+								data-modal-frame-id-param="sfd-details"
                                 class="btn"
                             >Ouvrir le modal</button>
                                 <button 
                                     data-action="click->modal#open"
                                     data-modal-url-param="{{ path('app_sfd_show', {id: sfd.id}) }}"
+									data-modal-frame-id-param="sfd-details"
                                     class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                     Voir/Modifier
                                 </button><a href="{{ path('app_sfd_show', {'id': sfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">Voir</a>
@@ -227,7 +233,7 @@
             </table>
         </div>
 
-    {% include 'theme/modal.html.twig' %}
+    {% include 'theme/modal.html.twig' with {'modal_frame_id': 'sfd-details'} %}
 
         {% if pager.haveToPaginate() %}
             <div class="mt-4">
