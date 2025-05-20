@@ -86,17 +86,18 @@
         </form>
 
         <div class="flex justify-end items-center mb-4"> {# Align New SFD button to the right #}
-             <a href="{{ path('app_sfd_new') }}"
-			  data-action="click->modal#open"
-			  data-modal-frame-id-param="sfd-details"
-    		  data-modal-url-param="{{ path('app_sfd_new') }}"
-			  class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-			  Nouveau SFD
-			  </a>
+            <a href="{{ path('app_sfd_new') }}"
+				data-action="click->modal#open" 
+				data-modal-frame-id-param="sfd-details"
+    			data-modal-url-param="{{ path('app_sfd_new') }}"
+				class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+			>
+				Nouveau SFD
+			</a>
         </div>
 		<div class="flex justify-center grid items-center gap-4">
         {% if pager.haveToPaginate() %}
-            <div id="pagination" class="mb-4">data-modal-frame-id-param="sfd-details"
+            <div id="pagination" class="mb-4">
                 {{ pagerfanta(pager) }} {# Utilise la vue par défaut configurée (ex: Tailwind) #}
             </div>
         {% endif %}

@@ -26,7 +26,7 @@
 
 		<div class="mb-6">
 			<h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-				Liste des SFDs (
+				Liste des Fonctions SFDs (
 				{{ pager.nbResults }}
 				au total)
 			</h1>
@@ -96,8 +96,13 @@
 		<div
 			class="flex justify-end items-center mb-4">
 			{# Align New fonction_sfd button to the right #}
-			<a href="{{ path('app_fonction_sfd_new') }}" data-action="click->modal#open" data-modal-url-param="{{ path('app_fonction_sfd_new') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-				Nouvelle Fonction SFD
+			<a 
+				href="{{ path('app_fonction_sfd_new') }}" 
+				data-action="click->modal#open" 
+				data-modal-url-param="{{ path('app_fonction_sfd_new') }}" 
+				data-modal-frame-id-param="fonction-sfd-details"
+				class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+					Nouvelle Fonction SFD
 			</a>
 		</div>
 		<div class="flex justify-center grid items-center gap-4">
@@ -125,20 +130,47 @@
 						<th scope="col" class="px-6 py-3"/>
 						{# Agrément #}
 						{# Sigle Filter #}
-							<th scope="col" class="px-6 py-3"> <div data-controller="autocomplete" data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" data-autocomplete-field-value="sigle" class="relative">
-								<input type="text" name="filter_sigle" id="filter_sigle_header" {# Unique ID #} value="{{ app.request.query.get('filter_sigle') }}" data-autocomplete-target="input" data-action="input->autocomplete#onInput filter#filter" {# Trigger autocomplete and filter debounce #} class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Filtrer Sigle">
-								<div
-									data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">{# Suggestions will be rendered here #}
+							<th scope="col" class="px-6 py-3"> 
+								<div 
+									data-controller="autocomplete" 
+									data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" 
+									data-autocomplete-field-value="sigle" 
+									class="relative">
+									<input 
+										type="text" 
+										name="filter_sigle" 
+										id="filter_sigle_header"  
+										value="{{ app.request.query.get('filter_sigle') }}" 
+										data-autocomplete-target="input" 
+										data-modal-frame-id-param="fonction-sfd-details"
+										data-action="input->autocomplete#onInput filter#filter"
+										{# Trigger autocomplete and filter debounce #} 
+										class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
+										placeholder="Filtrer Sigle">
+										<div
+											data-autocomplete-target="suggestions" 
+											class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">
+												{# Suggestions will be rendered here #}
+										</div>
+										
 								</div>
-							</div>
 						</th>
 						{# Nom Développé Filter #}
 						<th scope="col" class="px-6 py-3">
-							<div data-controller="autocomplete" data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" data-autocomplete-field-value="nomDeveloppe" class="relative">
-								<input type="text" name="filter_nom_developpe" id="filter_nom_developpe_header" {# Unique ID #} value="{{ app.request.query.get('filter_nom_developpe') }}" data-autocomplete-target="input" data-action="input->autocomplete#onInput filter#filter" class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Filtrer Nom">
-								<div
-									data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">{# Suggestions will be rendered here #}
-								</div>
+							<div 
+								data-controller="autocomplete" 
+								data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" 
+								data-autocomplete-field-value="libelle" class="relative">
+								<input type="text" 
+									data-modal-frame-id-param="fonction-sfd-details" 
+									name="filter_libelle" id="filter_libelle_header" {# Unique ID #} 
+									value="{{ app.request.query.get('filter_libelle') }}" 
+									data-autocomplete-target="input" 
+									data-action="input->autocomplete#onInput filter#filter" 
+									class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Filtrer Nom">
+									<div
+										data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">{# Suggestions will be rendered here #}
+									</div>
 							</div>
 						</th>
 					
@@ -197,7 +229,6 @@
 							<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
 								{{ fonctionSfd.libelle | default('N/A') }}
 							</td>
-							{# Adaptez avec vos vrais champs, ex: sfd.nom #}
 							<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
 								{{ fonctionSfd.sigle | default('N/A') }}
 							</td>
