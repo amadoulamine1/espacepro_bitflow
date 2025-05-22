@@ -9,7 +9,7 @@
 	<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
 		{{ fonctionSfd.sigle | default('N/A') }}
 	</td>
-	<td class="px-6 py-6 whitespace-nowrap text-right text-sm font-medium">
+	{#<td class="px-6 py-6 whitespace-nowrap text-right text-sm font-medium">
 		<button data-action="click->modal#open" data-modal-frame-id-param="fonction-sfd-details" data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="btn">
 			Ouvrir le modal
 		</button>
@@ -19,5 +19,5 @@
 		<a href="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
 			Voir
 		</a>
-	</td>
+	</td>#}
 </tr>

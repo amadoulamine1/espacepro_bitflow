@@ -1,0 +1,13 @@
+<tr id="tr-sfd-{{ sfd.id }}" class="hover:bg-gray-50 cursor-pointer" data-action="click->modal#open" data-modal-frame-id-param="sfd-details" data-modal-url-param="{{ path('app_sfd_show', {'id': sfd.id}) }}">
+
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ sfd.id }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+		{{ sfd.numAgrement | default('N/A') }}
+	</td><td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+		{{ sfd.sigle | default('N/A') }}
+	</td><td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+		{{ sfd.nomDeveloppe | default('N/A') }}
+	</td>
+</tr>

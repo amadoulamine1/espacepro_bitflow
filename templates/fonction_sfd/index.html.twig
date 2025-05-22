@@ -92,8 +92,7 @@
 					<tr
 						class="hover:bg-gray-50">
 						{# Empty cells for non-filterable columns #}
-						<th
-						scope="col" class="px-6 py-3"/>
+						
 						{# ID #}
 						<th scope="col" class="px-6 py-3"/>
 						{# Agrément #}
@@ -181,8 +180,7 @@
 						{# Make Email sortable #}
 						{#{ _self.sortable_th('Téléphone', 's.telephone') }#}
 						{# Make Telephone sortable #}
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"> Action
-						</th>
+						{#<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"> Action</th>#}
 
 					</tr>
 				</thead>
@@ -195,7 +193,7 @@
 					{% else %}
 						<tr>
 							<td colspan="8" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 text-center">
-								Aucun fonction_sfd trouvé.
+								Aucune fonction_sfd trouvé.
 							</td>
 							{# Ajustez le colspan au nombre réel de vos colonnes #}
 						</tr>

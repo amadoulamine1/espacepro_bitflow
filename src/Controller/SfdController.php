@@ -95,30 +95,20 @@ final class SfdController extends AbstractController
 
         // Si la requête est pour un turbo-frame, on rend le template partiel
         if ($request->headers->get('Turbo-Frame') === 'sfd-details') {
-            return $this->render('sfd/_new.html.twig', [
+            return $this->render('sfd/_detail_template.html.twig', [
                 'sfd' => $sfd,
                 'form' => $form->createView(),
+                'action' => 'append',
             ]);
         }
 
-        return $this->render('sfd/_new.html.twig', [
-            'sfd' => $sfd,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_sfd_index');
     }
 
     #[Route('/{id}', name: 'app_sfd_show', methods: ['GET'])]
     public function show(Sfd $sfd): Response
     {
         return $this->render('sfd/_show.html.twig', [
-            'sfd' => $sfd,
-        ]);
-    }
-
-    #[Route('/{id}/card', name: 'app_sfd_show_card', methods: ['GET'])]
-    public function showCard(Sfd $sfd): Response
-    {
-        return $this->render('sfd/_card.html.twig', [
             'sfd' => $sfd,
         ]);
     }
@@ -134,11 +124,23 @@ final class SfdController extends AbstractController
 
             // Après un enregistrement réussi, si la requête vient du turbo-frame du modal
             if ($request->headers->get('Turbo-Frame') === 'sfd-details') {
-                // Redirige vers la vue "show" de l'entité.
-                // Turbo chargera cette réponse dans le frame "sfd-details" du modal.
-                return $this->redirectToRoute('app_sfd_show', ['id' => $sfd->getId()], Response::HTTP_SEE_OTHER);
-            }
+                 // Render the stream for updating the row
+                $rowUpdateStream = $this->renderView('sfd/_table_row.stream.html.twig', [
+                    'sfd' => $sfd,
+                    'action' => 'replace',
+                ]);
+                // Stream to dispatch the modal close event by appending a script
+                $closeModalStream = '<turbo-stream action="append" target="modal-portal">' .
+                                    '<template>' .
+                                    '<script>document.dispatchEvent(new CustomEvent("modal:close"));</script>' .
+                                    '</template>' .
+                                    '</turbo-stream>';
 
+
+                $response = new Response(implode('', [$rowUpdateStream, $closeModalStream]));
+                $response->headers->set('Content-Type', 'text/vnd.turbo-stream.html');
+                return $response;
+            }
             // Fallback pour les soumissions de formulaire non-Turbo Frame (page complète)
             return $this->redirectToRoute('app_sfd_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -152,7 +154,7 @@ final class SfdController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sfd_delete', methods: ['POST'])]
+    /*#[Route('/{id}', name: 'app_sfd_delete', methods: ['POST'])]
     public function delete(Request $request, Sfd $sfd, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$sfd->getId(), $request->getPayload()->getString('_token'))) {
@@ -161,9 +163,9 @@ final class SfdController extends AbstractController
         }
 
         return $this->redirectToRoute('app_sfd_index', [], Response::HTTP_SEE_OTHER);
-    }
+    }*/
 
-    #[Route('/test/autocomplete', name: 'app_sfd_autocomplete', methods: ['GET'])]
+    #[Route('/autocomplete', name: 'app_sfd_autocomplete', methods: ['GET'])]
     public function autocomplete(Request $request, SfdRepository $sfdRepository): JsonResponse
     {
         $query = $request->query->get('query');
