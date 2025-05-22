@@ -1,0 +1,28 @@
+// assets/controllers/sync_filter_controller.js
+import { Controller } from "@hotwired/stimulus";
+
+export default class extends Controller {
+	static values = {
+		formInputId: String,
+	};
+    static targets = ["input"];
+
+	connect() {
+		this.sync(); // Synchronise la valeur initiale
+	}
+
+	sync() {
+		const formInput = document.getElementById(this.formInputIdValue);
+		if (formInput) {
+			formInput.value = this.element.value;
+			formInput.dispatchEvent(new Event("input", { bubbles: true }));
+		}
+	}
+
+    filter() {
+        // Soumet le formulaire automatiquement à chaque changement de filtre
+        if (this.element.tagName === "FORM") {
+            this.element.requestSubmit();
+        }
+    }
+}

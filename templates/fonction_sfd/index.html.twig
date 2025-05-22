@@ -54,39 +54,7 @@
 					<input data-filter-target="input" type="text" name="filter_libelle" id="filter_libelle" value="{{ app.request.query.get('filter_libelle') }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
 				</div>
-				<div>
-					<label for="limit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-						Afficher par page:
-					</label>
-					<select name="limit" id="limit" data-filter-target="input" data-action="change->filter#handleLimitChange" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-						{% set current_limit = app.request.query.get('limit', 10) %}
-						<option value="10" {% if current_limit == 10 %} selected {% endif %}>
-							10
-						</option>
-						<option value="20" {% if current_limit == 20 %} selected {% endif %}>
-							20
-						</option>
-						<option value="50" {% if current_limit == 50 %} selected {% endif %}>
-							50
-						</option>
-						<option value="100" {% if current_limit == 100 %} selected {% endif %}>
-							100
-						</option>
-					</select>
-				</div>
-				<div
-					class="flex space-x-2">
-					{# Use type="button" to prevent default form submission on click, rely on Stimulus #}
-					<button
-						type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-						{# Changed to type="submit" to work with requestSubmit() #}
-						Appliquer
-					</button>
-					{# Reset button - can use a link or a button with data-action #}
-					<a href="{{ path(app.request.attributes.get('_route'), {'limit': current_limit}) }}" data-turbo-frame="content_frame" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-						Réinitialiser
-					</a>
-				</div>
+				{% include 'theme/_limit_table.html.twig' %}
 			</div>
 			{# Champs cachés pour conserver le tri actuel lors du filtrage ou changement de limite #}
 			<input type="hidden" name="sort" value="{{ app.request.query.get('sort', 's.id') }}">
@@ -136,22 +104,24 @@
 									data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" 
 									data-autocomplete-field-value="sigle" 
 									class="relative">
-									<input 
-										type="text" 
-										name="filter_sigle" 
-										id="filter_sigle_header"  
-										value="{{ app.request.query.get('filter_sigle') }}" 
-										data-autocomplete-target="input" 
-										data-modal-frame-id-param="fonction-sfd-details"
-										data-action="input->autocomplete#onInput filter#filter"
-										{# Trigger autocomplete and filter debounce #} 
-										class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
-										placeholder="Filtrer Sigle">
-										<div
-											data-autocomplete-target="suggestions" 
-											class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">
-												{# Suggestions will be rendered here #}
-										</div>
+									<form method="get" action="{{ path(app.request.attributes.get('_route')) }}" data-turbo-frame="content_frame" data-controller="filter" data-action="input->filter#filter change->filter#filter" class="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
+										<input 
+											type="text" 
+											name="filter_sigle" 
+											id="filter_sigle_header"  
+											value="{{ app.request.query.get('filter_sigle') }}" 
+											data-autocomplete-target="input" 
+											data-modal-frame-id-param="fonction-sfd-details"
+											data-action="input->autocomplete#onInput filter#filter"
+											{# Trigger autocomplete and filter debounce #} 
+											class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
+											placeholder="Filtrer Sigle">
+											<div
+												data-autocomplete-target="suggestions" 
+												class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">
+													{# Suggestions will be rendered here #}
+											</div>
+									</form>
 										
 								</div>
 						</th>
@@ -161,7 +131,8 @@
 								data-controller="autocomplete" 
 								data-autocomplete-url-value="{{ path('app_fonction_sfd_autocomplete') }}" 
 								data-autocomplete-field-value="libelle" class="relative">
-								<input type="text" 
+								<form method="get" action="{{ path(app.request.attributes.get('_route')) }}" data-turbo-frame="content_frame" data-controller="filter" data-action="input->filter#filter change->filter#filter" class="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
+									<input type="text" 
 									data-modal-frame-id-param="fonction-sfd-details" 
 									name="filter_libelle" id="filter_libelle_header" {# Unique ID #} 
 									value="{{ app.request.query.get('filter_libelle') }}" 
@@ -171,6 +142,7 @@
 									<div
 										data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">{# Suggestions will be rendered here #}
 									</div>
+								</form>
 							</div>
 						</th>
 					

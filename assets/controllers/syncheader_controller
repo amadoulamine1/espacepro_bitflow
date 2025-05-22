@@ -1,0 +1,13 @@
+import { Controller } from "@hotwired/stimulus";
+
+export default class extends Controller {
+	static targets = ["main", "header"];
+
+	syncFromMain() {
+		this.headerTarget.value = this.mainTarget.value;
+	}
+
+	syncFromHeader() {
+		this.mainTarget.value = this.headerTarget.value;
+	}
+}
