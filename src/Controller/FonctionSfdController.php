@@ -80,19 +80,14 @@ final class FonctionSfdController extends AbstractController
 
          // Si la requête est pour un turbo-frame, on rend le template partiel
          if ($request->headers->get('Turbo-Frame') === 'fonction-sfd-details') {
-            return $this->render('fonctionsfd/_new.html.twig', [
+            return $this->render('fonction_sfd/_detail_template.html.twig', [
                 'sfd' => $fonctionSfd,
                 'form' => $form->createView(),
+                'action' => 'append',
             ]);
         }
 
-       /* return $this->render('fonction_sfd/_new.html.twig', [
-            'fonction_sfd' => $fonctionSfd,
-            'form' => $form,
-        ]);*/
-        return $this->render('fonction_sfd/_table_row.stream.html.twig', [
-            'fonctionSfd' => $fonctionSfd,
-        ]);
+        return $this->redirectToRoute('app_fonction_sfd_index');
     }
 
     #[Route('/{id}', name: 'app_fonction_sfd_show', methods: ['GET'])]
@@ -113,13 +108,34 @@ final class FonctionSfdController extends AbstractController
             $entityManager->flush();
             
             if ($request->headers->get('Turbo-Frame') === 'fonction-sfd-details') {
-                return $this->render('fonction_sfd/_table_row.stream.html.twig', [
+                //return $this->render('fonction_sfd/_table_row.stream.html.twig', [
+                 // Render the stream for updating the row
+                $rowUpdateStream = $this->renderView('fonction_sfd/_table_row.stream.html.twig', [
                     'fonctionSfd' => $fonctionSfd,
+                    'action' => 'replace',
                 ]);
+                // Stream to dispatch the modal close event by appending a script
+                $closeModalStream = '<turbo-stream action="append" target="modal-portal">' .
+                                    '<template>' .
+                                    '<script>document.dispatchEvent(new CustomEvent("modal:close"));</script>' .
+                                    '</template>' .
+                                    '</turbo-stream>';
+
+
+                $response = new Response(implode('', [$rowUpdateStream, $closeModalStream]));
+                $response->headers->set('Content-Type', 'text/vnd.turbo-stream.html');
+                return $response;
             }
 
             return $this->redirectToRoute('app_fonction_sfd_index', [], Response::HTTP_SEE_OTHER);
         }
+      /*  if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+    
+            return $this->render('fonction_sfd/_table_row.stream.html.twig', [
+                'fonctionSfd' => $fonctionSfd,
+            ], new Response('', 200, ['Content-Type' => 'text/vnd.turbo-stream.html']));
+        }*/
 
        
         return $this->render('fonction_sfd/_edit.html.twig', [

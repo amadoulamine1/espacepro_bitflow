@@ -114,10 +114,15 @@ export default class extends Controller {
 		}
 		this.boundCloseOnEscape = this.closeOnEscape.bind(this);
 		document.addEventListener("keydown", this.boundCloseOnEscape);
+		//ajout
+		this.boundCustomCloseEvent = this.close.bind(this); // For custom event
+		document.addEventListener("modal:close", this.boundCustomCloseEvent);
 	}
 
 	disconnect() {
 		document.removeEventListener("keydown", this.boundCloseOnEscape);
+		//ajout
+		document.removeEventListener("modal:close", this.boundCustomCloseEvent);
 	}
 
 	closeOnEscape(e) {

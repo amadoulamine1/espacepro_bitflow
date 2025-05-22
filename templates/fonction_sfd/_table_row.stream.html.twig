@@ -1,6 +1,30 @@
-<turbo-stream action="replace" target="fonction-sfd-{{ fonctionSfd.id }}">
+{% if action == 'replace' %}
+	<turbo-stream action="replace" target="tr-fonction-sfd-{{ fonctionSfd.id }}">
+        <template>
+            {% include 'fonction_sfd/_table_row.html.twig' with { 'fonctionSfd': fonctionSfd } %}
+        </template>
+    </turbo-stream>
+{% endif %}
+
+{% if action == 'append' %}
+{# Pour l'ajout (new) #}
+    <turbo-stream action="append" target="fonction-sfd-tbody">
+        <template>
+            {% include 'fonction_sfd/_table_row.html.twig' with { 'fonctionSfd': fonctionSfd } %}
+        </template>
+    </turbo-stream>
+{% endif %}
+
+
+{#<turbo-stream action="append" target="modal-portal">
 	<template>
-		{% include 'fonction_sfd/_table_row.html.twig' %}
+		<script>
+			document.dispatchEvent(new CustomEvent("modal:close"));
+		</script>
 	</template>
 </turbo-stream>
-<turbo-frame id="fonction-sfd-details"/>
+#}
+
+
+
+

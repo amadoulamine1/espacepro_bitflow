@@ -1,20 +1,23 @@
-<turbo-frame id="fonction-sfd-{{ fonctionSfd.id }}">
-	<tr 
-        class="hover:bg-gray-50 cursor-pointer" 
-        data-action="click->modal#open" 
-        data-modal-frame-id-param="fonction-sfd-details" 
-        data-modal-url-param="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}">
-		<td class="px-6 py-6 ...">
-			{{ fonctionSfd.id }}
-		</td>
-		<td class="px-6 py-6 ...">
-			{{ fonctionSfd.libelle }}
-		</td>
-		<td class="px-6 py-6 ...">
-			{{ fonctionSfd.sigle }}
-		</td>
-		<td
-			class="px-6 py-6 ...">{# ...boutons... #}
-		</td>
-	</tr>
-</turbo-frame>
+<tr id="tr-fonction-sfd-{{ fonctionSfd.id }}" class="hover:bg-gray-50 cursor-pointer" data-action="click->modal#open" data-modal-frame-id-param="fonction-sfd-details" data-modal-url-param="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}">
+
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ fonctionSfd.id }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+		{{ fonctionSfd.libelle | default('N/A') }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+		{{ fonctionSfd.sigle | default('N/A') }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-right text-sm font-medium">
+		<button data-action="click->modal#open" data-modal-frame-id-param="fonction-sfd-details" data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="btn">
+			Ouvrir le modal
+		</button>
+		<button data-action="click->modal#open" data-modal-frame-id-param="fonction-sfd-details" data-modal-url-param="{{ path('app_fonction_sfd_show', {id: fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+			Voir/Modifier
+		</button>
+		<a href="{{ path('app_fonction_sfd_show', {'id': fonctionSfd.id}) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+			Voir
+		</a>
+	</td>
+</tr>

@@ -93,7 +93,7 @@
 				</a>
 			{% endif %}
 		{% else %}
-			{% if fonctionSfd is defined and fonctionSfd.id is defined and fonctionSfd.id %}
+			{% if fonctionSfd is defined and fonctionSfd.id is defined %}
 				<a href="{{ path('app_fonction_sfd_edit', {id: fonctionSfd.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600" data-turbo-frame="fonction-sfd-details">
 					Modifier
 				</a>
