@@ -1,0 +1,11 @@
+<tr id="tr-users-message-{{ usersMessage.id }}" class="hover:bg-gray-50 cursor-pointer" data-action="click->modal#open" data-modal-frame-id-param="users-message-details" data-modal-url-param="{{ path('app_users_message_show', {'id': usersMessage.id}) }}">
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ usersMessage.id }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ usersMessage.message.corps|e }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ usersMessage.message.createdAt ? usersMessage.message.createdAt|date('d/m/Y H:i') : '' }}
+	</td>
+</tr>
