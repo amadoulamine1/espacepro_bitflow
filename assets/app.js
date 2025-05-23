@@ -18,6 +18,8 @@ import 'flowbite';
 // enable the interactive UI components from Flowbite with Turbo
 import 'flowbite/dist/flowbite.turbo.js';
 
+import { DataTable } from "simple-datatables";
+
 //Quill editeur wysiwig
 import Quill from "quill";
 
@@ -26,6 +28,17 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (editorContainer) {
 		new Quill(editorContainer, {
 			theme: "snow",
+		});
+	}
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+	const table = document.querySelector("#datatable");
+	if (table) {
+		new DataTable(table, {
+			perPage: 10,
+			searchable: true,
+			fixedHeight: true,
 		});
 	}
 });

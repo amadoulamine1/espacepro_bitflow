@@ -5,10 +5,16 @@
 /* Quill styles */
 @import 'quill/dist/quill.snow.css';
 
+/* Simple-DataTables styles */
+@import 'simple-datatables/dist/style.css';
+
 /* Flowbite styles */
 @plugin "flowbite/plugin";
+@plugin "flowbite-typography";
 
 @source "../../node_modules/flowbite";
+@source "../../node_modules/flowbite-datepicker";
+
 
 @custom-variant yellow (&:where(.yellow, .yellow *));
 @custom-variant dark (&:where(.dark, .dark *));
