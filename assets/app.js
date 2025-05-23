@@ -17,3 +17,15 @@ import 'flowbite';
 
 // enable the interactive UI components from Flowbite with Turbo
 import 'flowbite/dist/flowbite.turbo.js';
+
+//Quill editeur wysiwig
+import Quill from "quill";
+
+document.addEventListener("DOMContentLoaded", () => {
+	const editorContainer = document.getElementById("quill-editor");
+	if (editorContainer) {
+		new Quill(editorContainer, {
+			theme: "snow",
+		});
+	}
+});

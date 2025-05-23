@@ -1,6 +1,11 @@
 
 @import "tailwindcss";
 @import "flowbite/src/themes/default";
+
+/* Quill styles */
+@import 'quill/dist/quill.snow.css';
+
+/* Flowbite styles */
 @plugin "flowbite/plugin";
 
 @source "../../node_modules/flowbite";
