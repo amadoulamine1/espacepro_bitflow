@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UsersMessage{% endblock %}
+
+{% block body %}
+    <h1>UsersMessage</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ users_message.id }}</td>
+            </tr>
+            <tr>
+                <th>Is_read</th>
+                <td>{{ users_message.isRead ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ReadAt</th>
+                <td>{{ users_message.readAt ? users_message.readAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Is_visibleBCEAO</th>
+                <td>{{ users_message.isVisibleBCEAO ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Is_accepted</th>
+                <td>{{ users_message.isAccepted ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>MotifRejet</th>
+                <td>{{ users_message.motifRejet }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_users_message_index') }}">back to list</a>
+
+    <a href="{{ path('app_users_message_edit', {'id': users_message.id}) }}">edit</a>
+
+    {{ include('users_message/_delete_form.html.twig') }}
+{% endblock %}

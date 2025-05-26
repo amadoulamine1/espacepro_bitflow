@@ -75,13 +75,33 @@
 							</div>
 							{{ form_errors(formField) }}
 
-						{% elseif fieldType == 'textarea' %} 
-							{#% include 'theme/_textarea.html.twig' with {
-								editMode: true,
-								form: formField, 
-								content: value|default('') 
-							} %#}
-							{% include 'theme/_textarea.html.twig' with {'formField': formField} %}
+						{% elseif fieldType == 'textarea' %}
+							{#<div data-controller="tiptap" data-tiptap-content-value="{{ value }}">
+								<div class="prose dark:prose-invert max-w-none" data-tiptap-target="editor"></div>
+								{{ form_widget(formField, { 'attr': { 'class': 'hidden' } }) }}
+							</div>#}
+							<div class="rounded-md border border-gray-300 dark:border-gray-600" data-controller="tiptap" data-tiptap-content-value="{{ value|escape('js') }}">
+								<div class="tiptap-toolbar flex flex-wrap space-x-1 p-2 border-b border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-t-md">
+									<button type="button" data-action="click->tiptap#toggleBold" data-tiptap-target="boldButton"
+											title="Bold"
+											class="px-2 py-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 rounded [&.is-active]:bg-blue-500 [&.is-active]:text-white">
+										B
+									</button>
+									<button type="button" data-action="click->tiptap#toggleItalic" data-tiptap-target="italicButton"
+											title="Italic"
+											class="px-2 py-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 rounded [&.is-active]:bg-blue-500 [&.is-active]:text-white">
+										I
+									</button>
+									<button type="button" data-action="click->tiptap#setHeading" data-level="2" data-tiptap-target="headingButton"
+											title="Heading 2"
+											class="px-2 py-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 rounded [&.is-active]:bg-blue-500 [&.is-active]:text-white">
+										H2
+									</button>
+									{# You can add more buttons here for other StarterKit features like lists, blockquotes, etc. #}
+								</div>
+								<div data-tiptap-target="editor" class="prose dark:prose-invert max-w-none p-3"></div>
+								{{ form_widget(formField, { 'attr': { 'class': 'hidden', 'data-tiptap-target': 'input' } }) }}
+							</div>
 						{% else %}
 
 							{{ form_widget(formField, {
@@ -111,8 +131,9 @@
 								</label>
 							</div>
 						{% elseif fieldType == 'textarea' %}
-							{% include 'theme/_textarea_display.html.twig' with { 'value': value,'label': 'trtr'} %}
-
+							<div class="prose dark:prose-invert max-w-none">
+								{{ value|raw|default('Non renseigné') }}
+							</div>
 						{% else %}
 							<p class="text-gray-900 dark:text-white">
 								{{ value|default('Non renseigné') }}
@@ -159,5 +180,4 @@
 	{% if form is defined %}
 		{{ form_end(form) }}
 	{% endif %}
-
 </turbo-frame>

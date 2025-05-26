@@ -1,6 +1,7 @@
 
 @import "tailwindcss";
 @import "flowbite/src/themes/default";
+/*@import "@tailwindcss/typography";*/
 
 /* Quill styles */
 @import 'quill/dist/quill.snow.css';
@@ -30,6 +31,18 @@
     --color-dgsfc-800 :#b99270;
     --color-dgsfc-900 :#b99270;
 }
+
+@layer utilities {
+    .prose {
+      @apply max-w-none;
+      
+      &-dark {
+        --tw-prose-body: rgb(var(--color-gray-300));
+        --tw-prose-headings: rgb(var(--color-gray-100));
+        --tw-prose-links: rgb(var(--color-blue-400));
+      }
+    }
+  }
 :root {
     --color-dgsfc-100 :#f3f2f2;
     --color-dgsfc-200 :#b99280;
@@ -127,3 +140,47 @@
      /* Keep same background on hover for active link */
      @apply hover:bg-dgsfc-300 dark:hover:bg-dgsfc-700;
 }
+
+/* Style pour le contenu statique */
+.tiptap-static-content {
+    h1, h2, h3, h4 {
+      font-weight: bold;
+      margin: 1em 0 0.5em;
+    }
+    
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+    
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+    
+    ul { 
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin: 1em 0;
+    }
+    
+    ol {
+      list-style-type: decimal;
+      padding-left: 1.5rem;
+      margin: 1em 0;
+    }
+    
+    blockquote {
+      border-left: 3px solid #ddd;
+      padding-left: 1rem;
+      font-style: italic;
+      margin: 1em 0;
+    }
+    
+    p {
+      margin: 1em 0;
+    }
+  }
+  
+  /* Dark mode */
+  .dark .tiptap-static-content {
+    blockquote {
+      border-left-color: #4b5563;
+    }
+  }

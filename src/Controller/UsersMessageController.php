@@ -2,17 +2,17 @@
 
 namespace App\Controller;
 
+use Pagerfanta\Pagerfanta;
 use App\Entity\UsersMessage;
 use App\Form\UsersMessageForm;
-use App\Repository\UsersMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Pagerfanta\Pagerfanta;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use App\Repository\UsersMessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/users/message')]
 final class UsersMessageController extends AbstractController

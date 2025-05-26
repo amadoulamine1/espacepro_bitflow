@@ -14,12 +14,14 @@ import './bootstrap';
 
 // enable the interactive UI components from Flowbite
 import 'flowbite';
-
+import "flowbite-datepicker";
+import "flowbite-typography";
+import "@tailwindcss-typography";
 // enable the interactive UI components from Flowbite with Turbo
 import 'flowbite/dist/flowbite.turbo.js';
 
-import { DataTable } from "simple-datatables";
-
+import { SimpleDatatables } from "simple-datatables";
+import { Typography } from "@tiptap/extension-typography";
 //Quill editeur wysiwig
 import Quill from "quill";
 

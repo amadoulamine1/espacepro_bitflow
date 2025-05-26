@@ -1,0 +1,14 @@
+# config/packages/vich_uploader.yaml or app/config/config.yml
+vich_uploader:
+    db_driver: orm # or mongodb or phpcr
+
+    mappings:
+        piece_jointe:
+            uri_prefix: /piece_jointes
+            upload_destination: '%upload_destination%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            directory_namer: App\Service\CustomDirectoryNamer
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: false

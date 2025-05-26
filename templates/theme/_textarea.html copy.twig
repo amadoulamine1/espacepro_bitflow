@@ -1,0 +1,33 @@
+{# _textarea.html.twig #}
+<div {#{ stimulus_controller('tiptap', { editMode: editMode|default(false), content: content|default('') } ) }#}>
+	{% if editMode %}
+		<div class="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+			<div class="px-3 py-2 border-b border-gray-200 dark:border-gray-600">
+				<div
+					class="flex flex-wrap items-center">
+					{# Barre d'outils #}
+					<div
+						class="flex items-center space-x-1 rtl:space-x-reverse flex-wrap">
+						{# Les boutons de la toolbar avec data-action #}
+						<button
+							type="button" data-action="click->tiptap#toggleBold" data-tooltip-target="tooltip-bold" class="p-1.5 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">{# Icône Bold #}
+						</button>
+
+						{# Répéter pour tous les boutons avec les data-action appropriés #}
+
+					</div>
+				</div>
+			</div>
+			<div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+				<div data-tiptap-target="editor" class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400 prose dark:prose-invert max-w-none"></div>
+				{% if form is defined %}
+					{{ form_widget(form, { attr: { 'data-tiptap-target': 'input' } }) }}
+				{% endif %}
+			</div>
+		</div>
+	{% else %}
+		<div data-tiptap-target="viewer" class="prose dark:prose-invert max-w-none p-4 border rounded-lg dark:border-gray-600">
+			{{ content|raw }}
+		</div>
+	{% endif %}
+</div>
