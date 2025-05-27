@@ -16,7 +16,7 @@ import './bootstrap';
 import 'flowbite';
 import "flowbite-datepicker";
 import "flowbite-typography";
-import "@tailwindcss-typography";
+//import "@tailwindcss-typography";
 // enable the interactive UI components from Flowbite with Turbo
 import 'flowbite/dist/flowbite.turbo.js';
 

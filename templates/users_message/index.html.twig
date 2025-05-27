@@ -27,17 +27,17 @@
 			<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 items-end">
 				{# Use items-end to align buttons/selects #}
 				<div>
-					<label for="filter_num_agrement" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-						Filtrer par Agrement:
+					<label for="filter_message_corps" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+						Filtrer par Contenu message:
 					</label>
-					<input type="text" name="filter_num_agrement" id="filter_num_agrement" value="{{ app.request.query.get('filter_num_agrement') }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-filter-target="input">
+					<input type="text" name="filter_message_corps" id="filter_message_corps" value="{{ app.request.query.get('filter_message_corps') }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-filter-target="input">
 				</div>
-				<div>
+				{#<div>
 					<label for="filter_sigle_nom" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
 						Filtrer par Sigle:
 					</label>
 					<input type="text" name="filter_sigle_nom" id="filter_sigle_nom" value="{{ app.request.query.get('filter_sigle_nom') }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-filter-target="input">
-				</div>
+				</div>#}
 				<div>
 					<label for="filter_sender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
 						Filtrer l'envoyeur:
@@ -47,7 +47,7 @@
 				{% include 'theme/_limit_table.html.twig' %}
 			</div>
 			{# Champs cachés pour conserver le tri actuel lors du filtrage ou changement de limite #}
-			<input type="hidden" name="sort" value="{{ app.request.query.get('sort', 's.id') }}">
+			<input type="hidden" name="sort" value="{{ app.request.query.get('sort', 'u.id') }}">
 			<input type="hidden" name="direction" value="{{ app.request.query.get('direction', 'asc') }}">
 		</form>
 
@@ -86,7 +86,7 @@
 						<th scope="col" class="px-6 py-3">
 							<div data-controller="autocomplete" data-autocomplete-url-value="{{ path('app_users_message_autocomplete') }}" data-autocomplete-field-value="message_corps" class="relative">
 								<form method="get" action="{{ path(app.request.attributes.get('_route')) }}" data-turbo-frame="content_frame" data-controller="filter" data-action="input->filter#filter change->filter#filter" class="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
-									<input type="text" name="filter_message_corps" id="filter_message_corps" value="{{ app.request.query.get('filter_message_corps') }}" data-autocomplete-target="input" data-modal-frame-id-param="users-message-details" data-action="input->autocomplete#onInput filter#filter" {# Trigger autocomplete and filter debounce #} class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Filtrer agrement">
+									<input type="text" name="filter_message_corps" id="filter_message_corps" value="{{ app.request.query.get('filter_message_corps') }}" data-autocomplete-target="input" data-modal-frame-id-param="users-message-details" data-action="input->autocomplete#onInput filter#filter" {# Trigger autocomplete and filter debounce #} class="block w-full pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Filtrer message">
 									<div
 										data-autocomplete-target="suggestions" class="absolute z-20 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg mt-1 hidden">{# Suggestions will be rendered here #}
 									</div>
@@ -131,9 +131,9 @@
 							</th>
 						{% endmacro %}
 
-						{{ _self.sortable_th('Id', 's.id') }}
-						{{ _self.sortable_th('Corps', 's.message_corps') }}
-						{{ _self.sortable_th('Date Creattion', 's.message.createAt') }}
+						{{ _self.sortable_th('Id', 'u.id') }}
+						{{ _self.sortable_th('Corps', 'u.message.corps') }}
+						{{ _self.sortable_th('Date Creattion', 'u.message.createAt') }}
 				
 					</tr>
 				</thead>

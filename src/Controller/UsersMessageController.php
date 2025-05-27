@@ -24,13 +24,20 @@ final class UsersMessageController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $sort = $request->query->get('sort', 'u.id');
         $direction = $request->query->get('direction', 'asc');
-        $filterContent = $request->query->get('filter_content');
+        $filterCorps = $request->query->get('filter_message_corps');
 
-        $qb = $repo->createQueryBuilder('u')->orderBy($sort, $direction);
-        if ($filterContent) {
-            $qb->andWhere('u.content LIKE :content')->setParameter('content', '%'.$filterContent.'%');
+         // Adjust sort field if it refers to the message entity
+         $actualSortField = $sort;
+         if (str_starts_with($sort, 'u.message.')) {
+             $actualSortField = 'm.' . substr($sort, strlen('u.message.'));
+         }
+        $qb = $repo->createQueryBuilder('u')
+                    ->leftJoin('u.message', 'm')// Add join to message entity with alias 'm'
+                    ->orderBy($actualSortField, $direction);
+        if ($filterCorps) {
+            $qb->andWhere('LOWER(m.corps)  LIKE LOWER(:corps)')->setParameter('corps', '%'.$filterCorps.'%');
         }
-
+        
         $adapter = new QueryAdapter($qb);
         $pager = Pagerfanta::createForCurrentPageWithMaxPerPage($adapter, $page, $limit);
 

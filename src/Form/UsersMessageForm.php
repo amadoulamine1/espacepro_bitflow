@@ -20,12 +20,20 @@ class UsersMessageForm extends AbstractType
             ->add('is_visibleBCEAO')
             ->add('is_accepted')
             ->add('motifRejet')
-            ->add('sender', EntityType::class, [
+           /* ->add('sender', EntityType::class, [
                 'class' => Users::class,
+                'autocomplete' => true,
+            ])*/
+            ->add('sender', UsersAutocompleteField::class, [
+              //  'multiple' => true,
             ])
             ->add('message', MessageForm::class)
-            ->add('recipient', EntityType::class, [
+            /*->add('recipient', EntityType::class, [
                 'class' => Users::class,
+                'autocomplete' => true,
+            ])*/
+            ->add('recipient', UsersAutocompleteField::class, [
+               // 'multiple' => true,
             ])
         ;
     }

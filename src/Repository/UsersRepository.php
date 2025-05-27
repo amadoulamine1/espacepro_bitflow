@@ -81,6 +81,17 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
                 ->getQuery()
                 ->getResult();
     }
+
+    public function searchByTerm(string $term)
+        {
+            return $this->createQueryBuilder('u')
+                ->where('CONCAT(u.nom, \' \', u.prenom) LIKE :term')
+                ->orWhere('u.email LIKE :term')
+                ->orWhere('u.username LIKE :term')
+                ->setParameter('term', '%'.$term.'%')
+                ->orderBy('u.nom', 'ASC')
+                ->getQuery();
+        }
     // /**
     //  * @return Users[] Returns an array of Users objects
     //  */

@@ -3,7 +3,8 @@
 		{{ usersMessage.id }}
 	</td>
 	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-		{{ usersMessage.message.corps|e }}
+		{#{ usersMessage.message.corps|e }#}
+		{% include 'theme/_textarea_display.html.twig' with { 'value': usersMessage.message.corps} %}
 	</td>
 	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
 		{{ usersMessage.message.createdAt ? usersMessage.message.createdAt|date('d/m/Y H:i') : '' }}
