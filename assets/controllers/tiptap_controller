@@ -4,24 +4,40 @@ import StarterKit from "@tiptap/starter-kit";
 import Typography from "@tiptap/extension-typography";
 
 export default class extends Controller {
-	static targets = ["input", "editor", "boldButton", "italicButton", "headingButton"];
-	static values = { 
-                        content: String ,
-                        editMode: { type: Boolean, default: true } // Nouvelle valeur
-                    };
+	static targets = [
+		"input",
+		"editor",
+		"boldButton",
+		"italicButton",
+		"headingButton",
+	];
+	static values = {
+		content: String,
+		editMode: { type: Boolean, default: true },
+	};
 
 	connect() {
+		if (this.editModeValue) {
+			this.initEditor();
+		} else {
+			this.initStaticContent();
+		}
+	}
+
+	initEditor() {
 		this.editorInstance = new Editor({
 			element: this.editorTarget,
 			extensions: [
 				StarterKit.configure({
-					heading: { levels: [2, 3, 4] }, // Ensure H2, H3, H4 are available
+					heading: { levels: [2, 3, 4] },
 				}),
 				Typography,
 			],
 			content: this.contentValue,
 			onUpdate: () => {
-				this.inputTarget.value = this.editorInstance.getHTML();
+				if (this.hasInputTarget) {
+					this.inputTarget.value = this.editorInstance.getHTML();
+				}
 				this.updateButtonStates();
 			},
 			onSelectionUpdate: () => {
@@ -29,71 +45,69 @@ export default class extends Controller {
 			},
 			editorProps: {
 				attributes: {
-					// Tailwind's prose classes are applied to the parent `editorTarget` div.
-					// This class is for the direct editable element Tiptap creates.
-					class: "focus:outline-none min-h-[120px]", // Add min-height for usability
+					class:
+						"focus:outline-none min-h-[120px] prose dark:prose-invert max-w-none p-3",
 				},
 			},
 		});
-		this.updateButtonStates(); // Set initial button states
-        
+		this.updateButtonStates();
+	}
+
+	initStaticContent() {
+		// Applique le contenu directement avec le style
+		this.editorTarget.innerHTML = this.contentValue || "<p>Non renseigné</p>";
+		this.editorTarget.classList.add(
+			"prose",
+			"dark:prose-invert",
+			"max-w-none",
+			"p-3",
+			"border",
+			"border-gray-300",
+			"dark:border-gray-600",
+			"rounded-b-md"
+		);
 	}
 
 	disconnect() {
-		this.editorInstance.destroy();
+		if (this.editorInstance) {
+			this.editorInstance.destroy();
+		}
 	}
 
 	// Toolbar actions
 	toggleBold() {
-		this.editorInstance.chain().focus().toggleBold().run();
+		this.editorInstance?.chain().focus().toggleBold().run();
 	}
 
 	toggleItalic() {
-		this.editorInstance.chain().focus().toggleItalic().run();
+		this.editorInstance?.chain().focus().toggleItalic().run();
 	}
 
 	setHeading(event) {
 		const level = parseInt(event.currentTarget.dataset.level, 10);
-		this.editorInstance.chain().focus().toggleHeading({ level }).run();
+		this.editorInstance?.chain().focus().toggleHeading({ level }).run();
 	}
 
-	// Update button states to show if formatting is active
 	updateButtonStates() {
+		if (!this.editorInstance) return;
+
 		if (this.hasBoldButtonTarget) {
-			this.boldButtonTarget.classList.toggle('is-active', this.editorInstance.isActive('bold'));
+			this.boldButtonTarget.classList.toggle(
+				"is-active",
+				this.editorInstance.isActive("bold")
+			);
 		}
 		if (this.hasItalicButtonTarget) {
-			this.italicButtonTarget.classList.toggle('is-active', this.editorInstance.isActive('italic'));
+			this.italicButtonTarget.classList.toggle(
+				"is-active",
+				this.editorInstance.isActive("italic")
+			);
 		}
-		// This example is for a single H2 button.
-		// For multiple heading level buttons, you'd check isActive('heading', { level: LEVEL_NUMBER }) for each.
 		if (this.hasHeadingButtonTarget) {
-			this.headingButtonTarget.classList.toggle('is-active', this.editorInstance.isActive('heading', { level: 2 }));
+			this.headingButtonTarget.classList.toggle(
+				"is-active",
+				this.editorInstance.isActive("heading", { level: 2 })
+			);
 		}
 	}
 }
-/*import { Controller } from "@hotwired/stimulus";
-import { Editor } from "@tiptap/core";
-import StarterKit from "@tiptap/starter-kit";
-import Typography from "@tiptap/extension-typography";
-
-export default class extends Controller {
-	static targets = ["editor", "textarea"];
-
-	connect() {
-		this.editor = new Editor({
-			element: this.editorTarget,
-			extensions: [StarterKit, Typography],
-			content: this.textareaTarget.value,
-			onUpdate: ({ editor }) => {
-				this.textareaTarget.value = editor.getHTML();
-			},
-		});
-	}
-
-	disconnect() {
-		if (this.editor) {
-			this.editor.destroy();
-		}
-	}
-}*/

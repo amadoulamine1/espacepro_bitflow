@@ -33,7 +33,14 @@ class UsersMessageForm extends AbstractType
                 'autocomplete' => true,
             ])*/
             ->add('recipient', UsersAutocompleteField::class, [
-               // 'multiple' => true,
+                
+            ])
+
+            ->add('sfds',SfdAutocompleteField::class,[
+                'multiple' => true  ,
+                'tom_select_options' => [
+                    'maxItems' => 3,
+                ],
             ])
         ;
     }

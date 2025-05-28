@@ -1,0 +1,92 @@
+backend:
+  global:
+    welcome: Bienvenue
+    you_are_logged: Vous êtes connecté en tant que
+    leave_impersonate: Quitter l'impersonnation
+    change_my_password: Changer mon mot de passe
+    logout: Deconnexion
+    error: Erreur
+    success: Success
+    an_unexpected_error: Une erreur innatendue est survenue
+    must_not_be_empty: Ne doit pas être vide
+    please_confirm: Veuillez confirmer votre action?  
+    choice_action: Selectionner une action
+    no_item_selected: Aucun article selectionné
+  menu:
+    home: Accueil
+    user: Utilisateur
+    manage: Gérer
+    categories: Categorie
+    sfd: SFD
+    ratio: RATIOS
+    blog: Blog
+    history: Historique
+  role:
+    choice_role: Choisissez un role
+  user:
+    listing: Listing
+    user_listing: Liste des ustilisateurs
+    group_actions: Action de groupe
+    deactivate: Desactiver
+    Activate: Activer
+    delete: Suprimer
+    username: Nom d'utilisateur
+    firstname: Prenom utilisateur
+    lastname: Nom utilisateur
+    email: Email
+    name: Nom Complet
+    modifier: Modifier
+    status: Etat ?
+    password: Mot de passe
+    cancel: Annuler
+    register: Enregistrer
+    changer_password: Changer de mot de passe
+    changer_my_password: Changer mon mot de passe
+    current_password: Mot de passe actuel
+    new_password: Nouveau mot de passe
+    confirm_password: Confirmez votre mot de passe
+    remember_password: Veuiller votre mot de passe actuel
+    new_passwod_must_be: Les nouveaux mot de passe doivent être identique.
+    changed_password: Mot de passe modifié
+    add_user: Utilisateur ajouté
+    modify_user: Utilisateur modifié
+  login:
+    new_site: Nouveau sur ce Site?
+    create_acount: Creer un compte
+    all_rights: Tous droits réservés.
+    already_member: Déjà inscrit?
+    log_in: Se connecter
+  mail:
+    text_mail: Un e-mail a été envoyé qui contient un lien sur lequel vous pouvez cliquer pour réinitialiser votre mot de passe. Ce lien expirera dans  
+    hour(s) : heure(s)
+    text_mails : Si vous ne recevez pas d'email, veuillez vérifier votre dossier spam ou réessayer.
+    try_again : réessayer
+  sfd:
+      listing: Lister
+      sfd_listing: Liste des Institutions Financières (SFD)    
+      group_actions: Action de groupe
+      deactivate: Desactiver
+      Activate: Activer
+      delete: Supprimer
+      sfdname: Nom SFD
+      sigle: Sigle de l'institution
+      cancel: Annuler
+      register: Enregistrer
+      add_sfd: SFD ajouté
+      modify_sfd: SFD modifié    
+  ratio:
+      listing: Lister
+      ratio_listing: Liste des ratios prudentiels
+      group_actions: Action de groupe
+      deactivate: Desactiver
+      Activate: Activer
+      delete: Supprimer
+      cancel: Annuler
+      register: Enregistrer
+      add_sfd: Ratio ajouté
+      modify_ratio: Ratio modifié
+vich_uploader:
+  form_label:
+      delete_confirm: Supprimer?
+  link:
+      download: Télécharger

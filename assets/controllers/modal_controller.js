@@ -167,6 +167,7 @@ export default class extends Controller {
 		modalFrame.src = url;
 		this.modalElementTarget.style.display = "block";
 		document.body.style.overflow = "hidden";
+		this.modalElementTarget.style.overflow = "scroll";
 	}
 
 	close() {

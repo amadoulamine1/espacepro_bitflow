@@ -23,15 +23,15 @@ class PieceJointeLTType extends AbstractType
         //    ->add('type',TextType::class)
             
        
-            ->add('file', VichFileType::class,[
-                'label'=> 'Ajouter la lettre de transmission ici',
-                'required' => false,
-                'allow_delete' => true,
-                'delete_label' => '...',
-                'download_uri' => 'string',
-                'download_label' => 'download',
-                'asset_helper' => true,
-            ])
+        ->add('file', VichFileType::class,[
+            'label'=> 'Ajouter la lettre de transmission ici',
+            'required' => false,
+            'allow_delete' => false,
+            // 'delete_label' => 'Supprimer le fichier actuel',
+            'download_uri' => false,
+            //  'download_label' => 'Telecharger',
+            'asset_helper' => true,
+        ])
         
         ;
     }

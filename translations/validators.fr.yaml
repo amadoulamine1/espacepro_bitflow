@@ -1,0 +1,6 @@
+# translations/validators.fr.yaml
+VichUploaderBundle:
+  mime_type: "Le type de fichier est invalide ({{ type }}). Les types autorisés sont {{ types }}."
+  max_size: "Le fichier est trop volumineux ({{ size }} {{ suffix }}). La taille maximum autorisée est {{ limit }} {{ suffix }}."
+  uploadable_max_size: "Le fichier est trop volumineux. La taille maximum autorisée est {{ max_size }} {{ suffix }}."
+  uploadable_mime_type: "Le type de fichier est invalide ({{ mime_type }}). Les types autorisés sont {{ mime_types }}."

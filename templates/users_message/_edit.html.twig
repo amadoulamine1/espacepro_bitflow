@@ -1,7 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Messages utilisateurs
+{% endblock %}
+
 {# Pour le formulaire d'édition #}
+{% block body %}
+{# Pour le formulaire d'édition #}
+
 {% include 'users_message/_detail_template.html.twig' with {'usersmessage': usersMessage, 'form': form} %}
 
-
+{% endblock %}
 
 
 
