@@ -1,0 +1,34 @@
+{%- block choice_widget_expanded -%}
+{%- if "-inline" in label_attr.class|default("") -%}
+	<div class="control-group">
+		{%- for child in form %}
+			{{- form_widget(child, {
+                parent_label_class: label_attr.class|default(""),
+                translation_domain: choice_translation_domain,
+                label_attr: {class: 'w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'} {# Add classes here #}
+            }) -}}
+		{% endfor -%}
+	</div>
+{%- else -%}
+	<div {{ block('widget_container_attributes') }}>
+		{%- for child in form %}
+			{# This is a simplified example; Flowbite needs <li> and inner <div> #}
+			{# To match Flowbite's <ul><li><div><input><label></div></li></ul> structure: #}
+			{# You'd need to iterate and build this structure. #}
+			{# The 'attr' on ChoiceType gives you the <ul> like container #}
+			{# Each child here is a checkbox/radio #}
+				<div
+				class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600 last:border-r-0"> {# Mimic <li> styling #}
+				<div class="flex items-center ps-3">
+					{{ form_widget(child) }}
+					{{ form_label(child, null, {
+                        'label_attr': {
+                            'class': 'w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'
+                        }
+                    }) }}
+				</div>
+			</div>
+		{%- endfor -%}
+	</div>
+{%- endif -%}{%- endblock choice_widget_expanded -%}
+

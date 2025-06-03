@@ -15,7 +15,14 @@ class SfdAutocompleteField extends AbstractType
     {
         $resolver->setDefaults([
             'class' => Sfd::class,
-            'placeholder' => 'Choose a Sfd',
+            'placeholder' => 'Choisir une IMF',
+            'query_builder' => function ($er) {
+                return $er->createQueryBuilder('s')
+                    ->select('s')
+                    ->Where('s.is_actif = true')
+                    ->groupBy('s.id')
+                    ->orderBy('s.id', 'ASC');
+            },
             // 'choice_label' => 'name',
 
             // choose which fields to use in the search

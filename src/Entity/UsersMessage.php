@@ -39,7 +39,7 @@ class UsersMessage
 
     private $receipters = [];
 
-    private $sfds = [];
+  //  private $sfds = [];
 
     private $choixProfil = [];
 
@@ -151,22 +151,22 @@ class UsersMessage
     /**
      * Get the value of sfds
      */
-    public function getSfds(): ?array
+  /*  public function getSfds(): ?array
     {
         return $this->sfds;
-    }
+    }*/
 
     /**
      * Set the value of sfds
      *
      * @return  self
      */
-    public function setSfds(?array $sfds): self
+ /*   public function setSfds(?array $sfds): self
     {
         $this->sfds = $sfds;
 
         return $this;
-    }
+    }*/
 
     /**
      * Get the value of sfds

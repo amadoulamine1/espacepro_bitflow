@@ -1,0 +1,28 @@
+{% if action == 'replace' %}
+	<turbo-stream action="replace" target="tr-sfd-{{ sfd.id }}">
+        <template>
+            {% include 'admin/sfd/_table_row.html.twig' with { 'sfd': sfd } %}
+        </template>
+    </turbo-stream>
+{% endif %}
+
+{% if action == 'append' %}
+{# Pour l'ajout (new) #}
+    <turbo-stream action="append" target="sfd-tbody">
+        <template>
+            {% include 'admin/sfd/_table_row.html.twig' with { 'sfd': sfd } %}
+        </template>
+    </turbo-stream>
+{% endif %}
+
+<turbo-stream action="append" target="modal-portal">
+	<template>
+		<script>
+			document.dispatchEvent(new CustomEvent("modal:close"));
+		</script>
+	</template>
+</turbo-stream>
+
+
+
+

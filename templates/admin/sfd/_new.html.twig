@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Institutions de Microfinance
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.sfd-card {
+			transition: all 0.3s ease;
+		}
+		.sfd-card.expanded {
+			grid-column: span 4;
+		}
+		.sfd-details {
+			display: none;
+		}
+		.sfd-card.expanded .sfd-details {
+			display: block;
+		}
+	</style>
+{% endblock %}
+{% block body %}
+{# Pour le formulaire d'édition #}
+
+{% include 'admin/sfd/_detail_template.html.twig' with {'sfd': sfd, 'form': form} %}
+
+{% endblock %}
+
+
+
