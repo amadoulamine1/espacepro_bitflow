@@ -57,7 +57,7 @@ class MessageUsersMessageType extends AbstractType
                 'prototype' => true,
                 'attr' => array('class' => 'collection-piecejointes filepond-collection'),
             ]);*/
-            ->add('piecesJointes', CollectionType::class, [
+            ->add('pieceJointes', CollectionType::class, [
                 'entry_type' => PieceJointeUsersMessageType::class,
                 'allow_add' => true,
                 'allow_delete' => true,

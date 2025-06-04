@@ -83,7 +83,7 @@ class AdminUsersMessageForm extends AbstractType
             ->add('filterMode', ChoiceType::class, [
                 'choices' => [
                     'Tout le monde' => 'all',
-                    'Filtrer par SFD' => 'sfd',
+                    'Filtrer par SFD' => 'sfds',
                     'Filtrer par Réseau' => 'reseau',
                 ],
                 "label" => "nom",
@@ -94,7 +94,7 @@ class AdminUsersMessageForm extends AbstractType
                 'attr' => [
                     'id'=> 'filterMode',
                     'class' => 'form-control select2',
-                    'onchange' => 'toggleFilterMode(this.value)', // Fonction JS déclenchée au changement
+                  //  'onchange' => 'toggleFilterMode(this.value)', // Fonction JS déclenchée au changement
                 ],
                 'row_attr' => [
                      'id'=> 'filterMode', // Classe CSS personnalisée
@@ -105,6 +105,8 @@ class AdminUsersMessageForm extends AbstractType
             ])
             ->add('sfds', SfdAutocompleteField::class,[
                 'mapped' => false,
+               'multiple' => true, 
+                'required' => false,
             ])
 
             ->add('reseau', ChoiceType::class, [
@@ -117,6 +119,8 @@ class AdminUsersMessageForm extends AbstractType
                     'class' => 'block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
                 ],
                 'autocomplete' => true,
+                'required' => false,
+                'multiple' => true, // <-- IMPORTANT
             ]);
 
         ;

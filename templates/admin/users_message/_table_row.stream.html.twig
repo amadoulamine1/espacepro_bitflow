@@ -1,7 +1,7 @@
 {% if action == 'replace' %}
     <turbo-stream action="replace" target="tr-users-message-{{ usersMessage.id }}">
         <template>
-            {% include 'users_message/_table_row.html.twig' with { 'usersmessage': usersMessage } %}
+            {% include 'admin/users_message/_table_row.html.twig' with { 'usersmessage': usersMessage } %}
         </template>
     </turbo-stream>
 
@@ -10,7 +10,7 @@
 {# Pour l'ajout (new) #}
     <turbo-stream action="append" target="users-message-tbody">
         <template>
-            {% include 'users_message/_table_row.html.twig' with { 'usersmessage': usersMessage } %}
+            {% include 'admin/users_message/_table_row.html.twig' with { 'usersmessage': usersMessage } %}
         </template>
     </turbo-stream>
 {% endif %}

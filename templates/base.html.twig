@@ -8,6 +8,15 @@
 		{% endblock %}
 	</title>
 	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+{#<link rel="stylesheet" href="/vendor/file-viewer/style.css">
+<script src="/vendor/file-viewer/file-view.js"></script>#}
+{#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/file-viewer-js@0.1.3/dist/style.min.css">
+<script src="https://cdn.jsdelivr.net/npm/file-viewer-js@0.1.3/dist/umd/file-viewer.umd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/element-plus"></script>#}
+
+
 	{% block stylesheets %}
 		{{ encore_entry_link_tags('app') }}
 	{% endblock %}
@@ -34,6 +43,26 @@
 					</div>
 				</turbo-frame>
 			</main>
+
+			{# Modal pour l'aperçu des fichiers #}
+			<div data-controller="file-preview" {# Assurez-vous que ce contrôleur est bien enregistré #}>
+				<div data-file-preview-target="modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center z-50 p-4" style="display: none;">
+					<div class="bg-white p-2 sm:p-4 rounded-lg shadow-xl w-full max-w-xl md:max-w-3xl lg:max-w-5xl max-h-[95vh] flex flex-col">
+						<div class="flex justify-between items-center border-b pb-2 mb-2">
+							<h3 data-file-preview-target="title" class="text-lg font-semibold text-gray-800">
+								Aperçu
+							</h3>
+							<button data-action="click->file-preview#close" class="text-gray-500 hover:text-gray-800 text-2xl leading-none font-semibold" aria-label="Fermer">
+								&times;
+							</button>
+						</div>
+						<div
+							data-file-preview-target="contentContainer" class="overflow-auto flex-grow">{# Le contenu de l'aperçu sera injecté ici #}
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</body>
 	</html>
 

@@ -132,15 +132,18 @@
 						{% endmacro %}
 
 						{{ _self.sortable_th('Id', 'u.id') }}
+						{{ _self.sortable_th('Destinataire', 'u.recipient') }}
 						{{ _self.sortable_th('Corps', 'u.message.corps') }}
-						{{ _self.sortable_th('Date Creattion', 'u.message.createAt') }}
-				
+						{{ _self.sortable_th('Date Creation', 'u.message.created_at') }}
+						<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+							Pieces Jointes
+						</th>
 					</tr>
 				</thead>
 				<tbody id="users-message-tbody" class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
 					{% for usersMessage in pager %}
 						{# Pagerfanta est itérable, il itère sur les résultats de la page actuelle #}
-						{% include 'users_message/_table_row.html.twig' with { 'usersMessage': usersMessage } %}
+						{% include 'admin/users_message/_table_row.html.twig' with { 'usersMessage': usersMessage } %}
 
 					{% else %}
 						<tr>

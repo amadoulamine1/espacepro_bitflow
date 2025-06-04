@@ -6,8 +6,8 @@
 
 		{{ form_start(form, {
             'action': is_edit
-                ? path('app_users_message_edit', {id: usersMessage.id})
-                : path('app_users_message_new'),
+                ? path('app_admin_users_message_edit', {id: usersMessage.id})
+                : path('app_admin_users_message_new'),
             'method': 'POST',
             'attr': {'data-turbo-frame': 'users-message-details'}
         }) }}
@@ -117,7 +117,7 @@
 				</div>
 				
 			</div>
-				<div class="relative group flex md:grid-cols-2 gap-6">
+			<div class="relative group flex md:grid-cols-2 gap-6">
 				<div class="flex items-center">
 					{% if form is defined %}
 						{% include 'theme/_textarea.html.twig' with  {'formField': form is defined ? form.message.corps : null} %}
@@ -126,6 +126,33 @@
 					{% endif %}
 				</div>
 			</div>
+			<div class="relative group flex md:grid-cols-2 gap-6">
+				<div class="flex items-center">
+					{% if form is defined %}
+						hhhh
+					{% else %}
+						<p class="card-text">
+							<i class="fad fa-paperclip"></i>
+							Pieces Jointes :
+							{{usersMessage.message.pieceJointes|length}}
+						</p>
+						<div class="list-group">
+							<a href="{{ path('pieces_jointes_download_all', { id: usersMessage.message.id, umId: usersMessage.id }) }}" class="btn btn-primary">
+									📦 Télécharger tout en ZIP
+							</a>
+
+							{% for pj in usersMessage.message.pieceJointes %}
+								<a class="list-group-item list-group-item-action" target="_blank" href="{{ vich_uploader_asset(pj, 'file') }}">
+									<i class="fad fa-file-download"></i>
+									{{ pj.OriginalFileName }}
+								</a>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+			
 		</div>
 			
 
@@ -140,13 +167,13 @@
 
 		{% if form is defined %}
 			{% if is_edit %}
-				<a href="{{ path('app_users_message_show', {id: usersMessage.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-turbo-frame="users-message-details">
+				<a href="{{ path('app_admin_users_message_show', {id: usersMessage.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-turbo-frame="users-message-details">
 					Annuler (Voir)
 				</a>
 			{% endif %}
 		{% else %}
 			{% if usersMessage is defined and usersMessage.id is defined and usersMessage.id %}
-				<a href="{{ path('app_users_message_edit', {id: usersMessage.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600" data-turbo-frame="users-message-details">
+				<a href="{{ path('app_admin_users_message_edit', {id: usersMessage.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600" data-turbo-frame="users-message-details">
 					Modifier
 				</a>
 			{% endif %}

@@ -11,7 +11,7 @@
 <turbo-frame id="users-message-details">
 
 	{{ form_start(form, {
-		'action': path('app_users_message_new'),
+		'action': path('app_admin_users_message_new'),
 		'method': 'POST',
 		'attr': {'data-turbo-frame': 'users-message-details'}
 	}) }}
@@ -25,7 +25,7 @@
 			</h1>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6" data-controller="filter">
+		<div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6" data-controller="filtermode">
 			<div class="relative group">
 				<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-controller="choix-profil">
 					{% for child in form.choixProfil %}
@@ -62,13 +62,14 @@
 						attr: {
 							class: 'block py-2.5 px-0 w-1/2 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer',
 							id: form.filterMode.vars.id,
+							'data-filtermode-target': 'filterMode'
 						}
 					}) }}
 					
 				</div>
 			</div>
 
-			<div class="relative group grid" data-filter-target="sfds">
+			<div class="relative group grid" data-filtermode-target="sfds">
 				<div class="flex items-center">
 					{{ form_label(form.sfds) }} 
 					{{ form_widget(form.sfds, {
@@ -80,7 +81,7 @@
 				</div>
 			</div>
 
-			<div class="relative group grid" data-filter-target="reseau">
+			<div class="relative group grid" data-filtermode-target="reseau">
 				<div class="flex items-center">
 					{{ form_label(form.reseau) }} 
 					{{ form_widget(form.reseau) }}
@@ -112,8 +113,8 @@
 
 			<div class="relative group grid">
 				<div data-controller="pieces-jointes">
-					<div data-pieces-jointes-target="container" data-prototype="{{ form_widget(form.message.piecesJointes.vars.prototype, {'label': false})|e('html_attr') }}">
-						{% for pieceForm in form.message.piecesJointes %}
+					<div data-pieces-jointes-target="container" data-prototype="{{ form_widget(form.message.pieceJointes.vars.prototype, {'label': false})|e('html_attr') }}">
+						{% for pieceForm in form.message.pieceJointes %}
 							<div class="mb-2" data-pieces-jointes-target="item">
 								{{ form_widget(pieceForm, {'label': false}) }}
 							</div>
@@ -131,7 +132,7 @@
 		
 		{% else %}
 			{% if usersMessage is defined and usersMessage.id is defined and usersMessage.id %}
-				<a href="{{ path('app_users_message_edit', {id: usersMessage.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600" data-turbo-frame="users-message-details">
+				<a href="{{ path('app_admin_users_message_edit', {id: usersMessage.id}) }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600" data-turbo-frame="users-message-details">
 					Modifier
 				</a>
 			{% endif %}

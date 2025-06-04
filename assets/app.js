@@ -25,6 +25,10 @@ import { Typography } from "@tiptap/extension-typography";
 //Quill editeur wysiwig
 import Quill from "quill";
 
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
+
+
 document.addEventListener("DOMContentLoaded", () => {
 	const editorContainer = document.getElementById("quill-editor");
 	if (editorContainer) {
