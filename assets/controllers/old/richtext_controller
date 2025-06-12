@@ -1,0 +1,263 @@
+// assets/controllers/richtext_controller.js
+
+import { Controller } from "@hotwired/stimulus";
+import { Editor } from "@tiptap/core";
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import Image from "@tiptap/extension-image";
+import YouTube from "@tiptap/extension-youtube";
+import TextStyle from "@tiptap/extension-text-style";
+import FontFamily from "@tiptap/extension-font-family";
+import Color from "@tiptap/extension-color";
+import Bold from "@tiptap/extension-bold";
+import { initDropdowns, initTooltips } from "flowbite"; // Import specific init functions
+
+// Custom TextStyle extension to handle font-size
+const FontSizeTextStyle = TextStyle.extend({
+	addAttributes() {
+		return {
+			fontSize: {
+				default: null,
+				parseHTML: (element) => element.style.fontSize,
+				renderHTML: (attributes) => {
+					if (!attributes.fontSize) {
+						return {};
+					}
+					return { style: "font-size: " + attributes.fontSize };
+				},
+			},
+		};
+	},
+});
+
+// Custom Bold extension to ensure proper style
+const CustomBold = Bold.extend({
+	renderHTML({ mark, HTMLAttributes }) {
+		const { style, ...rest } = HTMLAttributes;
+		const newStyle = "font-weight: bold;" + (style ? " " + style : "");
+		return ["span", { ...rest, style: newStyle.trim() }, 0];
+	},
+	addOptions() {
+		return {
+			...this.parent?.(),
+			HTMLAttributes: {},
+		};
+	},
+});
+
+export default class extends Controller {
+	static targets = ["editor", "input"]; // 'editor' for Tiptap div, 'input' for hidden textarea
+
+	connect() {
+		// Manually initialize Flowbite components (dropdowns, tooltips) within this new content
+		initDropdowns();
+		initTooltips();
+
+		this.editor = new Editor({
+			element: this.editorTarget,
+			extensions: [
+				StarterKit.configure({
+					textStyle: false, // Disable default textStyle so we can use our custom one
+					bold: false, // Disable default bold so we can use our custom one
+					marks: {
+						bold: false,
+					},
+				}),
+				CustomBold,
+				TextStyle,
+				Color,
+				FontSizeTextStyle, // Our custom extension for font size
+				FontFamily,
+				Highlight,
+				Underline,
+				Link.configure({
+					openOnClick: false,
+					autolink: true,
+					defaultProtocol: "https",
+				}),
+				TextAlign.configure({
+					types: ["heading", "paragraph"],
+				}),
+				Image,
+				YouTube.configure({
+					controls: false, // You might want to enable controls
+					nocookie: true, // Privacy-enhanced mode
+				}),
+			],
+			content: this.inputTarget.value, // Initialize with content from the hidden textarea
+			editorProps: {
+				attributes: {
+					class:
+						"format lg:format-lg dark:format-invert focus:outline-none format-blue max-w-none",
+				},
+			},
+			onUpdate: ({ editor }) => {
+				// Update the hidden textarea with the editor's HTML content
+				this.inputTarget.value = editor.getHTML();
+			},
+		});
+	}
+
+	disconnect() {
+		if (this.editor) {
+			this.editor.destroy();
+		}
+	}
+
+	// -- Tiptap Actions --
+
+	toggleBold(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleBold().run();
+	}
+
+	toggleItalic(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleItalic().run();
+	}
+
+	toggleUnderline(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleUnderline().run();
+	}
+
+	toggleStrike(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleStrike().run();
+	}
+
+	toggleHighlight(event) {
+		event.preventDefault();
+		const isHighlighted = this.editor.isActive("highlight");
+		this.editor
+			.chain()
+			.focus()
+			.toggleHighlight({
+				color: isHighlighted ? undefined : "#ffc078",
+			})
+			.run();
+	}
+
+	toggleCode(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleCode().run();
+	}
+
+	addLink(event) {
+		event.preventDefault();
+		const url = window.prompt("Enter URL:", "https://flowbite.com");
+		if (url) {
+			this.editor.chain().focus().toggleLink({ href: url }).run();
+		}
+	}
+
+	removeLink(event) {
+		event.preventDefault();
+		this.editor.chain().focus().unsetLink().run();
+	}
+
+	setTextSize(event) {
+		event.preventDefault();
+		const fontSize = event.currentTarget.dataset.textSize;
+		this.editor.chain().focus().setMark("textStyle", { fontSize }).run();
+		// Hide dropdown manually if needed, or rely on Flowbite's default behavior
+	}
+
+	setTextColor(event) {
+		event.preventDefault();
+		const color = event.currentTarget.dataset.hexColor || event.target.value;
+		this.editor.chain().focus().setColor(color).run();
+	}
+
+	resetColor(event) {
+		event.preventDefault();
+		this.editor.chain().focus().unsetColor().run();
+	}
+
+	setFontFamily(event) {
+		event.preventDefault();
+		const fontFamily = event.currentTarget.dataset.fontFamily;
+		this.editor.chain().focus().setFontFamily(fontFamily).run();
+		// Hide dropdown manually if needed
+	}
+
+	textAlignLeft(event) {
+		event.preventDefault();
+		this.editor.chain().focus().setTextAlign("left").run();
+	}
+
+	textAlignCenter(event) {
+		event.preventDefault();
+		this.editor.chain().focus().setTextAlign("center").run();
+	}
+
+	textAlignRight(event) {
+		event.preventDefault();
+		this.editor.chain().focus().setTextAlign("right").run();
+	}
+
+	toggleParagraph(event) {
+		event.preventDefault();
+		this.editor.chain().focus().setParagraph().run();
+	}
+
+	toggleHeading(event) {
+		event.preventDefault();
+		const level = parseInt(event.currentTarget.dataset.headingLevel);
+		this.editor.chain().focus().toggleHeading({ level }).run();
+	}
+
+	addImage(event) {
+		event.preventDefault();
+		const url = window.prompt(
+			"Enter image URL:",
+			"https://placehold.co/600x400"
+		);
+		if (url) {
+			this.editor.chain().focus().setImage({ src: url }).run();
+		}
+	}
+
+	addVideo(event) {
+		event.preventDefault();
+		const url = window.prompt(
+			"Enter YouTube URL:",
+			"https://www.youtube.com/watch?v=KaLxCiilHns"
+		);
+		if (url) {
+			this.editor.commands.setYoutubeVideo({
+				src: url,
+				width: 640,
+				height: 480,
+			});
+		}
+	}
+
+	toggleList(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleBulletList().run();
+	}
+
+	toggleOrderedList(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleOrderedList().run();
+	}
+
+	toggleBlockquote(event) {
+		event.preventDefault();
+		this.editor.chain().focus().toggleBlockquote().run();
+	}
+
+	toggleHorizontalRule(event) {
+		event.preventDefault();
+		this.editor.chain().focus().setHorizontalRule().run();
+	}
+
+	// Handle color picker input change
+	handleColorInputChange(event) {
+		this.setTextColor(event); // Re-use setTextColor logic
+	}
+}

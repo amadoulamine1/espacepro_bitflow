@@ -27,7 +27,8 @@
 </head>
 
 	<body
-		class="flex h-screen overflow-hidden">
+		class="flex h-screen overflow-hidden" 
+		data-controller="file-preview">
 		<!-- Navbar -->
 		{% include 'theme/navbar.html.twig' %}
 		<!-- Sidebar -->
@@ -45,7 +46,7 @@
 			</main>
 
 			{# Modal pour l'aperçu des fichiers #}
-			<div data-controller="file-preview" {# Assurez-vous que ce contrôleur est bien enregistré #}>
+			{#<div data-controller="file-preview" >
 				<div data-file-preview-target="modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center z-50 p-4" style="display: none;">
 					<div class="bg-white p-2 sm:p-4 rounded-lg shadow-xl w-full max-w-xl md:max-w-3xl lg:max-w-5xl max-h-[95vh] flex flex-col">
 						<div class="flex justify-between items-center border-b pb-2 mb-2">
@@ -57,11 +58,19 @@
 							</button>
 						</div>
 						<div
-							data-file-preview-target="contentContainer" class="overflow-auto flex-grow">{# Le contenu de l'aperçu sera injecté ici #}
-						</div>
+							data-file-preview-target="contentContainer" class="overflow-auto flex-grow">
 					</div>
 				</div>
+			</div>#}
+			<div  data-file-preview-target="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+				<div style="background:#fff; padding:1rem; border-radius:8px; max-width:90vw; max-height:90vh; position:relative;  overflow-y: auto;">
+					<button type="button" data-action="file-preview#close" style="position:absolute;top:10px;right:10px;">
+						✖
+					</button>
+					<div data-file-preview-target="content"></div>
+				</div>
 			</div>
+
 
 		</body>
 	</html>

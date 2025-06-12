@@ -1,0 +1,92 @@
+/*import { Controller } from "@hotwired/stimulus";
+
+export default class extends Controller {
+	static targets = ["toutLeMonde", "autreProfil"];
+
+	connect() {
+		this.toggleAutresProfils();
+        this.checkGerantByDefault();
+	}
+
+	toggleAutresProfils() {
+		const isToutLeMondeChecked = this.toutLeMondeTarget.checked;
+		this.autreProfilTargets.forEach((checkbox) => {
+			checkbox.disabled = isToutLeMondeChecked;
+			if (isToutLeMondeChecked) {
+				checkbox.checked = false;
+			}
+		});
+	}
+
+    checkGerantByDefault() {
+        // Si aucune case n'est cochée, on coche "Gerant"
+        const anyChecked = this.toutLeMondeTarget.checked || this.autreProfilTargets.some(cb => cb.checked);
+        if (!anyChecked) {
+            const gerantCheckbox = this.autreProfilTargets.find(cb => cb.value === "Gerant");
+            if (gerantCheckbox) {
+                gerantCheckbox.checked = true;
+            }
+        }
+    }
+}
+*/
+import { Controller } from "@hotwired/stimulus";
+
+export default class extends Controller {
+	static targets = [
+		"toutLeMonde",
+		"autreProfil",
+		"sfds",
+		"reseau",
+		"filterMode",
+	];
+
+	connect() {
+		this.toggleAutresProfils();
+		this.checkGerantByDefault();
+		this.toggleFilterFields();
+
+		if (this.hasFilterModeTarget) {
+			this.filterModeTarget.addEventListener("change", () =>
+				this.toggleFilterFields()
+			);
+		}
+	}
+
+	toggleAutresProfils() {
+		const isToutLeMondeChecked = this.toutLeMondeTarget.checked;
+		this.autreProfilTargets.forEach((checkbox) => {
+			checkbox.disabled = isToutLeMondeChecked;
+			if (isToutLeMondeChecked) {
+				checkbox.checked = false;
+			}
+		});
+	}
+
+	checkGerantByDefault() {
+		const anyChecked =
+			this.toutLeMondeTarget.checked ||
+			this.autreProfilTargets.some((cb) => cb.checked);
+		if (!anyChecked) {
+			const gerantCheckbox = this.autreProfilTargets.find(
+				(cb) => cb.value === "Gerant"
+			);
+			if (gerantCheckbox) {
+				gerantCheckbox.checked = true;
+			}
+		}
+	}
+
+	toggleFilterFields() {
+		if (!this.hasFilterModeTarget) return;
+		const value = this.filterModeTarget.value;
+		if (this.hasSfdsTarget)
+			this.sfdsTarget.style.display = value === "sfd" ? "" : "none";
+		if (this.hasReseauTarget)
+			this.reseauTarget.style.display = value === "reseau" ? "" : "none";
+		if (value === "all") {
+			if (this.hasSfdsTarget) this.sfdsTarget.style.display = "none";
+			if (this.hasReseauTarget) this.reseauTarget.style.display = "none";
+		}
+	}
+}

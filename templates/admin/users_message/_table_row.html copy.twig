@@ -1,0 +1,49 @@
+<tr id="tr-users-message-{{ usersMessage.id }}" class="hover:bg-gray-50 cursor-pointer" data-action="click->modal#open" data-modal-frame-id-param="users-message-details" data-modal-url-param="{{ path('app_admin_users_message_show', {'id': usersMessage.id}) }}">
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ usersMessage.id }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ usersMessage.recipient }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{#{ usersMessage.message.corps|e }#}
+		{% include 'theme/_textarea_display.html.twig' with { 'value': usersMessage.message.corps} %}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		{{ usersMessage.message.createdAt ? usersMessage.message.createdAt|date('d/m/Y H:i') : '' }}
+	</td>
+	<td class="px-6 py-6 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+		<p class="card-text flex items-center gap-2">
+			<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"/>
+			</svg>Pieces Jointes :
+			{{usersMessage.message.pieceJointes|length}}
+		</p>
+		<div class="list-group" data-controller="file-viewer">
+			{#<a href="{{ path('pieces_jointes_download_all', { id: usersMessage.message.id, umId: usersMessage.id }) }}" class="btn btn-primary">
+				📦 Télécharger tout en ZIP
+			</a>#}
+
+			{% for pj in usersMessage.message.pieceJointes %}
+				<a class="list-group-item list-group-item-action flex items-center gap-2" 
+					target="_blank" href="{{ vich_uploader_asset(pj, 'file') }}"
+					data-file-preview-url-param="{{ vich_uploader_asset(pj, 'file') }}"
+                   	data-file-preview-name-param="{{ pj.nomOriginal | default('Aperçu') }}"
+                   	data-file-preview-type-param="{{ vich_uploader_asset(pj, 'file') | split('.') | last | lower | default('') }}"
+					data-action="mouseenter->file-preview#open"
+				>
+					<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01"/>
+					</svg>
+					{{ pj.OriginalFileName }}
+					<object data="{{ vich_uploader_asset(pj, 'file') }}" width="100%" height="100%">
+					{#<p>Il apparait que votre navigateur ne dispose pas de plugin pour visualiser les pdf																																								      No worries, just
+						<a href="{{ vich_uploader_asset(pj, 'file') }}">Telecharger le fichier</a>
+					</p>#}
+				</object>
+				</a>
+			{% endfor %}
+		</div>
+
+	</td>
+</tr>

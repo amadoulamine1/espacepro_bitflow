@@ -19,28 +19,26 @@
 			</svg>Pieces Jointes :
 			{{usersMessage.message.pieceJointes|length}}
 		</p>
-		<div class="list-group" data-controller="file-viewer">
-			{#<a href="{{ path('pieces_jointes_download_all', { id: usersMessage.message.id, umId: usersMessage.id }) }}" class="btn btn-primary">
-				📦 Télécharger tout en ZIP
-			</a>#}
-
+		<div class="list-group" >
+			
 			{% for pj in usersMessage.message.pieceJointes %}
 				<a class="list-group-item list-group-item-action flex items-center gap-2" 
-					target="_blank" href="{{ vich_uploader_asset(pj, 'file') }}"
-					data-file-preview-url-param="{{ vich_uploader_asset(pj, 'file') }}" {# Adaptez pour obtenir l'URL du fichier #}
-                   	data-file-preview-name-param="{{ pj.nomOriginal | default('Aperçu') }}"
-                   	data-file-preview-type-param="{{ vich_uploader_asset(pj, 'file') | split('.') | last | lower | default('') }}" {# 'pdf', 'jpg', 'docx', etc. #}
-					data-action="click->file-preview#open"
+					href="{{ vich_uploader_asset(pj, 'file') }}"
+					data-file-preview-url-param="{{ vich_uploader_asset(pj, 'file') }}"
+                   	data-file-preview-name-param="{{ pj.originalFileName | default('Aperçu') }}"  
+                   	data-file-preview-type-param="{{ pj.originalFileName | split('.') | last | lower | default('') }}"
+					data-action="mouseenter->file-preview#open"
+				
 				>
 					<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01"/>
 					</svg>
 					{{ pj.OriginalFileName }}
-					<object data="{{ vich_uploader_asset(pj, 'file') }}" width="100%" height="100%">
+					<!--object data="{{ vich_uploader_asset(pj, 'file') }}" width="100%" height="100%">
 					{#<p>Il apparait que votre navigateur ne dispose pas de plugin pour visualiser les pdf																																								      No worries, just
 						<a href="{{ vich_uploader_asset(pj, 'file') }}">Telecharger le fichier</a>
 					</p>#}
-				</object>
+				</object-->
 				</a>
 			{% endfor %}
 		</div>

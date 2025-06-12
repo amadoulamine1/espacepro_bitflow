@@ -1,0 +1,125 @@
+import { Controller } from "@hotwired/stimulus";
+
+export default class extends Controller {
+	static targets = ["modal", "title", "contentContainer"];
+
+	// Méthode appelée lors du clic sur le lien d'aperçu
+	open(event) {
+		event.preventDefault();
+		const targetElement = event.currentTarget;
+		const url = targetElement.dataset.filePreviewUrlParam;
+		const name = targetElement.dataset.filePreviewNameParam || "Aperçu";
+		// Essaye de récupérer le type depuis data-attribute, sinon déduit de l'URL
+		let type = (targetElement.dataset.filePreviewTypeParam || "").toLowerCase();
+		if (!type && url) {
+			const parts = url.split(".");
+			if (parts.length > 1) {
+				type = parts.pop().toLowerCase();
+			}
+		}
+
+		if (!url) {
+			console.error("FilePreviewController: URL du fichier manquante.");
+			this.contentContainerTarget.innerHTML =
+				"<p>Erreur : URL du fichier non spécifiée.</p>";
+			this.titleTarget.textContent = "Erreur";
+			this.modalTarget.style.display = "flex";
+			document.body.style.overflow = "hidden";
+			return;
+		}
+
+		this.titleTarget.textContent = name;
+		this.contentContainerTarget.innerHTML =
+			'<p class="text-center py-4">Chargement de l\'aperçu...</p>'; // Message de chargement
+
+		this.modalTarget.classList.remove("hidden"); // Ensure Tailwind's 'hidden' class is removed
+		this.modalTarget.classList.add("flex"); // Ensure the modal is displayed as a flex container
+
+		this.renderPreview(url, type);
+
+		//this.modalTarget.style.display = "flex";
+		document.body.style.overflow = "hidden"; // Empêche le défilement de l'arrière-plan
+	}
+
+	// Ferme le modal
+	close() {
+		//this.modalTarget.style.display = "none";
+		this.modalTarget.classList.add("hidden"); // Hide the modal with the 'hidden' class
+		this.modalTarget.classList.remove("flex"); 
+		this.contentContainerTarget.innerHTML = ""; // Nettoie le contenu
+		document.body.style.overflow = "auto"; // Restaure le défilement
+	}
+
+	// Génère le HTML pour l'aperçu en fonction du type de fichier
+	renderPreview(url, fileType) {
+		let content = "";
+		const extension = fileType || url.split(".").pop().toLowerCase();
+
+		switch (extension) {
+			case "pdf":
+				content = `<iframe src="${url}" style="width:100%; height:75vh;" frameborder="0" title="Aperçu PDF"></iframe>`;
+				break;
+			case "jpg":
+			case "jpeg":
+			case "png":
+			case "gif":
+			case "webp":
+			case "svg":
+				content = `<img src="${url}" alt="Aperçu de l'image" style="max-width:100%; max-height:75vh; display:block; margin:auto;">`;
+				break;
+			case "doc":
+			case "docx":
+			case "xls":
+			case "xlsx":
+			case "ppt":
+			case "pptx":
+				// Utilisation de Google Docs Viewer. Nécessite que l'URL soit publiquement accessible.
+				// Assurez-vous que l'URL est correctement encodée.
+				const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(
+					url
+				)}&embedded=true`;
+				content = `<iframe src="${viewerUrl}" style="width:100%; height:75vh;" frameborder="0" title="Aperçu ${extension.toUpperCase()}"></iframe>`;
+				// Alternative si Google Docs Viewer n'est pas souhaité ou si le fichier n'est pas public :
+				// content = `<div class="text-center p-4">
+				//                <p>L'aperçu direct pour les fichiers ${extension.toUpperCase()} n'est pas disponible.</p>
+				//                <a href="${url}" download class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mt-2">
+				//                    Télécharger le fichier
+				//                </a>
+				//            </div>`;
+				break;
+			default:
+				content = `<div class="text-center p-4">
+                               <p>Aperçu non disponible pour ce type de fichier (${extension}).</p>
+                               <a href="${url}" download class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mt-2">
+                                   Télécharger le fichier
+                               </a>
+                           </div>`;
+		}
+		this.contentContainerTarget.innerHTML = content;
+	}
+
+	// Gère la fermeture du modal avec la touche "Escape" et clic extérieur
+	connect() {
+		this.boundCloseOnEscape = this.closeOnEscape.bind(this);
+		document.addEventListener("keydown", this.boundCloseOnEscape);
+
+		// Ferme le modal si on clique sur le fond (backdrop)
+		this.modalTarget.addEventListener("click", (event) => {
+			if (event.target === this.modalTarget) {
+				this.close();
+			}
+		});
+	}
+
+	disconnect() {
+		document.removeEventListener("keydown", this.boundCloseOnEscape);
+		// Le listener sur modalTarget sera géré par Stimulus car c'est un target.
+	}
+
+	closeOnEscape(event) {
+		//if (event.key === "Escape" && this.modalTarget.style.display !== "none") {
+		if (event.key === "Escape" && !this.modalTarget.classList.contains("hidden")) {
+			this.close();
+		}
+	}
+}
