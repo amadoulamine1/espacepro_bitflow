@@ -63,10 +63,10 @@ export default class extends Controller {
         console.log("le type du cod:", type);
 		let html = "";
 		if (["jpg", "jpeg", "png", "gif", "webp", "bmp"].includes(type)) {
-			html = `<img src="${url}" alt="Aperçu" style="max-width:80vw;max-height:80vh; display:block; margin:auto;"/>`;
+			html = `<img src="${url}" alt="Aperçu" style="max-width:50vw;max-height:50vh; display:block; margin:auto;"/>`;
 		} else if (type === "pdf") {
 			// Utiliser un iframe est généralement plus fiable pour les PDF
-			html = `<iframe src="${url}" style="width:80vw; height:80vh; border:none;" title="Aperçu PDF">
+			html = `<iframe src="${url}" style="width:50vw; height:50vh; border:none;" title="Aperçu PDF">
                         <p>Votre navigateur ne peut pas afficher ce PDF. <a href="${url}" target="_blank" rel="noopener noreferrer">Télécharger le PDF</a></p>
                     </iframe>`;
 		} else {
@@ -108,8 +108,15 @@ export default class extends Controller {
 		this.contentTarget.innerHTML = "";
         document.body.style.overflow = "auto"; // Restaure le défilement
 	}
+    closeOnEscape(event) {
+        // Check if the modal is actually visible before trying to close
+        if (event.key === "Escape" && this.hasModalTarget && this.modalTarget.style.display !== "none") {
+            this.close();
+        }
+    }
 
     disconnect() {
         this.cancelScheduledClose(); // Nettoyer le timeout si le contrôleur est déconnecté
+        document.removeEventListener("keydown", this.boundCloseOnEscape);
     }
 }
