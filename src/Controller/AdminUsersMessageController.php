@@ -71,7 +71,8 @@ final class AdminUsersMessageController extends AbstractController
                 return $this->redirectToRoute('app_admin_users_message_show', ['id' => $message->getId()], Response::HTTP_SEE_OTHER);
             }
             return $this->redirectToRoute('app_admin_users_message_index');*/
-            $piecesJointes=$this->upload($usersMessage->getMessage(),$slugger);
+            //Upload les pieces jointes et la lettre de transmission
+            $this->upload($usersMessage->getMessage(),$slugger);
             $choixProfil = $form->get('choixProfil')->getData();
             $filterMode = $form->get('filterMode')->getData();
             $sfdforms = $form->get('sfds')->getData();
@@ -289,13 +290,50 @@ final class AdminUsersMessageController extends AbstractController
     }
 
 
-    public function upload(Message $message, SluggerInterface $slugger){
-        $pjs=new ArrayCollection();
-        
+    public function upload(Message $message, SluggerInterface $slugger): void
+    {
         //Upload la lettre de transmission
-        
-        //recuperer la piece jointe lettre de transmission dans message 
-        $lettreTransmissionFile = $message->getLettreTransmission();
+        $lettreTransmission = $message->getLettreTransmission();
+        if ($lettreTransmission && $lettreTransmission->getFile() !== null) {
+            $lettreTransmission->setLibelle("Lettre de Transmission");
+            // Le type est généralement l'extension, qui est définie dans uploadOneFile
+            $this->uploadOneFile($message, $lettreTransmission, $slugger); // Modifie $lettreTransmission par référence
+        } elseif ($lettreTransmission && $lettreTransmission->getFile() === null) {
+            // Si l'objet LettreTransmission existe mais n'a pas de fichier,
+            // cela signifie qu'un champ de formulaire vide a été soumis. Dissociez-le.
+            $message->setLettreTransmission(null);
+        }
+
+        //Upload des restes des pieces jointes
+        // L'écouteur de formulaire dans MessageUsersMessageType devrait déjà avoir supprimé
+        // les nouvelles PieceJointe vides de la collection.
+        // Cette boucle traite celles qui restent (soit existantes, soit nouvelles avec un fichier).
+        foreach ($message->getPieceJointes() as $pieceJointe) {
+            // Double-vérification au cas où l'écouteur de formulaire n'aurait pas tout intercepté
+            // ou pour les pièces jointes existantes où le fichier pourrait être supprimé.
+            if ($pieceJointe->getFile() !== null) {
+                $this->uploadOneFile($message, $pieceJointe, $slugger); // Modifie $pieceJointe par référence
+            } else {
+                // Si une PieceJointe sans fichier est toujours dans la collection ici
+                // (par exemple, une PJ existante où le fichier a été supprimé via le formulaire mais l'entité est restée),
+                // elle doit être retirée pour éviter les erreurs de persistance si son 'path' devient invalide.
+                // Cependant, VichUploaderBundle gère généralement la suppression.
+                // L'écouteur de formulaire est le principal responsable du nettoyage des *nouvelles* entrées vides.
+            }
+        }
+    }
+
+    /**
+     * ex upload
+     * 
+     * 
+     * public function upload(Message $message, SluggerInterface $slugger){
+     * $pjs=new ArrayCollection();
+     * *  
+     *   //Upload la lettre de transmission
+     *   
+     *   //recuperer la piece jointe lettre de transmission dans message 
+     *   $lettreTransmissionFile = $message->getLettreTransmission();
 
         //Verifier si la piece jointe est nulle ou pas remarque la piece jointe ne doit pas etre nullle, si la piece jointe est nulle ,l'objet ne sera pas inclus
         if( ($lettreTransmissionFile->getFile())!=null){
@@ -322,4 +360,6 @@ final class AdminUsersMessageController extends AbstractController
         //retourner la liste des pieces jointes a attacher a l'objet pour la sauvegarde
         return $pjs;
     }
+     * 
+     */
 }

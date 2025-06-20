@@ -142,17 +142,20 @@
 										📦 Télécharger tout en ZIP
 								</a>
 							</p>
-							<div class="text-blue-300 hover:text-blue-500">
+							<div class="text-blue-300 hover:text-blue-500 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-3">
 								{% for pj in usersMessage.message.pieceJointes %}
+									<div>
 									<a class="list-group-item list-group-item-action " 
 									target="_blank" href="{{ vich_uploader_asset(pj, 'file') }}" 
 									download="{{ pj.OriginalFileName|default('piece_jointe') }}"
-									data-file-url="{{ vich_uploader_asset(pj, 'file') }}"
-									data-file-type="{{ vich_uploader_asset(pj, 'file')|split('.')|last|lower }}"
-									data-action="mouseenter->file-preview#open mouseleave->file-preview#close">
+									data-file-preview-url-param="{{ vich_uploader_asset(pj, 'file') }}"
+									data-file-preview-name-param="{{ pj.originalFileName | default('Aperçu') }}"  
+									data-file-preview-type-param="{{ pj.originalFileName | split('.') | last | lower | default('') }}"
+									data-action="mouseenter->file-preview#open">
 										<i class="fad fa-file-download"></i>
 										{{ pj.OriginalFileName }}
 									</a>
+									</div>
 								{% endfor %}
 							</div>
 						</div>

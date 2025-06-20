@@ -3,10 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Message;
+use App\Entity\PieceJointe;
 use App\Form\PieceJointeType;
 use App\Form\TinyMCEEditableType;
 use Symfony\Component\Form\AbstractType;
 use Eckinox\TinymceBundle\Form\Type\TinymceType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -66,6 +70,27 @@ class MessageUsersMessageType extends AbstractType
                 'label' => false,
                 'required' => false,
             ])
+            // Add an event listener to filter out empty new PieceJointe entries
+            //afin de nettoyer les pieces jointes vides
+            ->get('pieceJointes')->addEventListener(
+                FormEvents::SUBMIT,
+                function (FormEvent $event) {
+                    /** @var Collection|null $collection */
+                    $collection = $event->getData();
+
+                    if ($collection instanceof Collection) {
+                        $toRemove = [];
+                        foreach ($collection as $pieceJointe) {
+                            if ($pieceJointe instanceof PieceJointe && $pieceJointe->getId() === null && $pieceJointe->getFile() === null) {
+                                $toRemove[] = $pieceJointe;
+                            }
+                        }
+                        foreach ($toRemove as $pjToRemove) {
+                            $collection->removeElement($pjToRemove);
+                        }
+                    }
+                }
+            )
         ;
     }
 

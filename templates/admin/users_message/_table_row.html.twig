@@ -20,8 +20,9 @@
 			{{usersMessage.message.pieceJointes|length}}
 		</p>
 		<div class="list-group" >
-			
+			<div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-3">
 			{% for pj in usersMessage.message.pieceJointes %}
+				<div>
 				<a class="list-group-item list-group-item-action flex items-center gap-2" 
 					href="{{ vich_uploader_asset(pj, 'file') }}"
 					data-file-preview-url-param="{{ vich_uploader_asset(pj, 'file') }}"
@@ -40,7 +41,9 @@
 					</p>#}
 				</object-->
 				</a>
+			</div>
 			{% endfor %}
+			</div>
 		</div>
 
 	</td>
